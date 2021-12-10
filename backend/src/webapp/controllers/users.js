@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 let mongoDriver;
 let neoDriver;
-require("../persistance/mongo_driver")().then(driver => mongoDriver = driver);
-require("../persistance/neo_driver")().then(driver => neoDriver = driver);
+require("@persistence/drivers/mongo_driver")().then(driver => mongoDriver = driver);
+require("@persistence/drivers/neo_driver")().then(driver => neoDriver = driver);
 
 /* GET users listing. */
 router.get('/', async function (req, res, next) {
