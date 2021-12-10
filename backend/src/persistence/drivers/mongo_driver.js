@@ -3,9 +3,9 @@ const debug = require('debug')('backend:server');
 
 class MongoDriver {
 
+    static _COLLECTION = 'songs';
     static _URI = 'mongodb://127.0.0.1:27017';
     static _DATABASE = 'spotify';
-    static _COLLECTION = 'songs';
 
     constructor() {
         if (!MongoDriver.instance) {
@@ -35,8 +35,14 @@ class MongoDriver {
         }
     }
 
-    getSongsCollection() {
-        return this._db.collection(MongoDriver._COLLECTION)
+    async executeFindQuery(query, options) {
+        const results = this._db.collection(MongoDriver._COLLECTION).find(query, options);
+        return await results.toArray()
+    }
+
+    async executeAggregationQuery(pipeline) {
+        const results = this._db.collection(MongoDriver._COLLECTION).aggregate(pipeline);
+        return await results.toArray()
     }
 
     async closeConnection() {

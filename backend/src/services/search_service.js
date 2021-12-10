@@ -14,8 +14,8 @@ class SearchService {
         this._artistDao = await require("@persistence/daos/artist_dao")();
     }
 
-    async getArtists(){
-        return this._artistDao.getArtists();
+    async getMostPopularSongsByArtist(artist, page, itemsPerPage){
+        return this._songsDao.getMostPopularSongsByArtist(artist, page, itemsPerPage);
     }
 
 }

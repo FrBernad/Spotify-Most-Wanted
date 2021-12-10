@@ -40,6 +40,7 @@ class NeoDriver {
             )
         } catch (error) {
             debug(`unable to execute Neo query. ${error}`)
+            return null;
         } finally {
             await session.close()
             return result.records;

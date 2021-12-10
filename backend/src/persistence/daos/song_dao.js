@@ -14,18 +14,37 @@ class SongsDao {
         this._neoDriver = await require("@persistence/drivers/neo_driver")();
     }
 
-    async _executeQuery(query, variables) {
-        const session = this._client.session();
-        let result;
+    async getMostPopularSongsByArtist(artist, page, itemsPerPage) {
         try {
-            result = await session.readTransaction(tx =>
-                tx.run(query, variables)
-            )
+            
+            const pipeline = [
+                {
+                    $unwind: "$co_artists", preserveNullAndEmptyArrays: true
+                },
+                {
+                    $match: {
+                        $or: [
+                            { artist: artist },
+                            { co_artists: artist },
+                        ]
+                    }
+                },
+                {
+                    $sort: {
+                        popularity: -1
+                    }
+                },
+                {
+                    $skip: page * itemsPerPage
+                },
+                {
+                    $limit: itemsPerPage
+                }
+            ];
+
+            return await mongoDriver.executeAggregationQuery(pipeline);
         } catch (error) {
-            debug(`unable to execute Neo query. ${error}`)
-        } finally {
-            await session.close()
-            return result.records;
+            return null;
         }
     }
 
