@@ -9,14 +9,14 @@ class MongoDriver {
 
     constructor() {
         if (!MongoDriver.instance) {
-            this._init = false;
+            this._isInitialized = false;
             MongoDriver.instance = this;
         }
 
         return MongoDriver.instance;
     }
 
-    async initConnection() {
+    async _init() {
         try {
             // Create a new MongoClient
             this._client = new MongoClient(MongoDriver._URI);
@@ -51,9 +51,9 @@ class MongoDriver {
 
 const mongoDriver = new MongoDriver();
 module.exports = async () => {
-    if (!mongoDriver._init) {
-        mongoDriver._init = true;
-        await mongoDriver.initConnection();
+    if (!mongoDriver._isInitialized) {
+        mongoDriver._isInitialized = true;
+        await mongoDriver._init();
         Object.freeze(mongoDriver);
     }
     return mongoDriver;

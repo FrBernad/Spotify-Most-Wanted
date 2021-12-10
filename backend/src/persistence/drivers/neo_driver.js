@@ -8,14 +8,14 @@ class NeoDriver {
 
     constructor() {
         if (!NeoDriver.instance) {
-            this._init = false;
+            this._isInitialized = false;
             NeoDriver.instance = this;
         }
 
         return NeoDriver.instance;
     }
 
-    async initConnection() {
+    async _init() {
         try {
             // Create a new NeoClient
             this._client = neo4j.driver(NeoDriver._URI, null);
@@ -58,9 +58,9 @@ class NeoDriver {
 
 const neoDriver = new NeoDriver();
 module.exports = async () => {
-    if (!neoDriver._init) {
-        neoDriver._init = true;
-        await neoDriver.initConnection();
+    if (!neoDriver._isInitialized) {
+        neoDriver._isInitialized = true;
+        await neoDriver._init();
         Object.freeze(neoDriver);
     }
     return neoDriver;
