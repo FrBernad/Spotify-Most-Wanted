@@ -32,8 +32,10 @@ server.on('listening', onListening);
  * Create database connections.
  */
 let mongoDriver;
+let neoDriver;
 
 require("../persistance/mongo_driver")().then(driver => mongoDriver = driver);
+require("../persistance/neo_driver")().then(driver => neoDriver = driver);
 
 process.on('SIGINT', cleanup);
 process.on('SIGTERM', cleanup);
@@ -43,6 +45,7 @@ process.on('SIGTERM', cleanup);
  */
 async function cleanup() {
   await mongoDriver.closeConnection();
+  await neoDriver.closeConnection();
   process.exit();
 }
 

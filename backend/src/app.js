@@ -30,10 +30,12 @@ app.use(function (err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   res.status(500);
-  res.send(JSON.stringify({
-    status: 500,
-    message: "error"
-  }));
+  res.send(
+    {
+      status: 500,
+      message: "error"
+    }
+  );
 });
 
 module.exports = app;
