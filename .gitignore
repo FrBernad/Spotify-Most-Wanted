@@ -384,3 +384,5 @@ datasets/raw-data
 datasets/.DS_Store
 
 .DS_Store
+
+datasets/population-scripts/database.json
