@@ -1,8 +1,8 @@
 import csv
 
-from song import Song
+from song_utils import Song
 
-input_CSV = open("../raw-data/database.csv", 'r', encoding="ISO-8859-1")
+input_CSV = open("../raw-data/Final database.csv", 'r', encoding="ISO-8859-1")
 
 output_json_array = open("database.json", "w", encoding="ISO-8859-1")
 
