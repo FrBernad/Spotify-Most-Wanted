@@ -34,10 +34,10 @@ class Song:
         self.uri = uri
         self.album = album
         self.title = title
-        self.countries = []
+        self.countries = set()
 
     def add_country(self, country):
-        self.countries.append(country)
+        self.countries.add(country)
 
     def __eq__(self, other):
         return isinstance(other, Song) and self.title == other.title

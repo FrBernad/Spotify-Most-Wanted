@@ -28,7 +28,7 @@ try:
 
         song = songs.get(title)
         if song:
-            song.countries.append(country)
+            song.add_country(country)
             song.popularity += int(popularity.replace('.', ''))
         else:
             songs[title] = Song(title, uri, popularity, artist,
