@@ -9,7 +9,7 @@ output_json_array = open("database.json", "w", encoding="ISO-8859-1")
 songs: Song = {}
 
 try:
-    reader = csv.DictReader(input_CSV, delimiter=';')
+    reader = csv.DictReader(input_CSV, delimiter=',')
     for row in reader:
         title = row["Title"]
         country = row["Country"]
