@@ -36,11 +36,15 @@ class MongoDriver {
     }
 
     async executeFindQuery(query, options) {
+        debug("Executing find query with:\nquery:\n\t" + query + "\noptions:\n\t"+options)
+
         const results = this._db.collection(MongoDriver._COLLECTION).find(query, options);
         return await results.toArray()
     }
 
     async executeAggregationQuery(pipeline) {
+        debug("Executing aggregation query with pipeline:\n\t" + JSON.stringify(pipeline))
+
         const results = this._db.collection(MongoDriver._COLLECTION).aggregate(pipeline);
         return await results.toArray()
     }
