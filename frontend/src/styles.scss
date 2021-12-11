@@ -1,0 +1,27 @@
+/* You can add global styles to this file, and also import other style files */
+
+:root {
+  --primary: #FFFFFF;
+  --secondary: #F7743C;
+}
+
+@font-face {
+  font-family: 'ReadexPro';
+  src: url('/assets/fonts/ReadexPro/ReadexPro-VariableFont_wght.ttf') format('truetype');
+}
+
+* {
+  font-family: 'ReadexPro', sans-serif;
+  --primary-color: #003359;
+  --secondary-color: #6699CC;
+  --tertiary-color: #EBEDF3;
+  --quaternary-color: #BDBDBD;
+  --quinary-color: #676767;
+}
+
+.outerContainer {
+  background: rgb(36, 20, 85);
+  background: linear-gradient(180deg, rgba(36, 20, 85, 1) 25%, rgba(77, 43, 177, 1) 100%);
+  width: 100%;
+  min-height: 100vh;
+}
