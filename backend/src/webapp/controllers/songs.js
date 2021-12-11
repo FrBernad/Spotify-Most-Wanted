@@ -17,7 +17,7 @@ router.get('/', async function (req, res, next) {
     const country = getOrDefault(queryParams.country, "");
     const genre = getOrDefault(queryParams.genre, "");
 
-    results = await searchService.getMostPopularSongs(artist, country, genre, page, itemsPerPage);
+    const results = await searchService.getMostPopularSongs(artist, country, genre, page, itemsPerPage);
 
     if (!results) {
         res.sendStatus(400);

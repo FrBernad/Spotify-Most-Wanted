@@ -18,7 +18,7 @@ class SearchService {
     }
 
     async getMostPopularSongs(artist, country, genre, page, itemsPerPage) {
-        
+
         page = parseInt(page);
         itemsPerPage = parseInt(itemsPerPage);
 
@@ -30,7 +30,7 @@ class SearchService {
         debug(`Searching most popular songs artist:${!artist ? "any" : artist} country:${!country ? "any" : country} genre:${!genre ? "any" : genre} (page:${page}, itemsPerPage:${itemsPerPage})`);
         const totalItems = await this._songsDao.getMostPopularSongsCount(artist, country, genre);
 
-        const results =  await this._songsDao.getMostPopularSongs(artist, country, genre, page, itemsPerPage);
+        const results = await this._songsDao.getMostPopularSongs(artist, country, genre, page, itemsPerPage);
 
         return new PaginatedResult(page, itemsPerPage, totalItems, results);
     }

@@ -18,7 +18,6 @@ class SongsDao {
 
     async getMostPopularSongsCount(artist, country, genre){
         try {
-
             const match = this._generateMatch(artist, country, genre);
 
             const pipeline = this._generateCountPipeline(match);
@@ -26,7 +25,7 @@ class SongsDao {
             const result = await this._mongoDriver.executeAggregationQuery(pipeline);
             
             return result[0].totalItems;
-
+            
         } catch (error) {
             debug(error);
             return null;
