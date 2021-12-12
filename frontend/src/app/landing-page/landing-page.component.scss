@@ -1,0 +1,41 @@
+.main-header {
+  font-size: 60px;
+}
+
+.secondary-header {
+  font-size: 50px;
+}
+
+.info-container {
+  border: var(--primary) 5px solid;
+  border-radius: 50%;
+}
+
+.info-section {
+  background-color: var(--primary);
+}
+
+.section-title {
+  font-weight: bold;
+  font-size: 30px;
+  color: var(--tertiary);
+}
+
+.section-subtitle {
+  font-weight: bold;
+  font-size: 20px;
+  color: var(--tertiary);
+}
+
+.icons-color {
+  color: var(--tertiary);
+}
+
+.info-text {
+  font-size: 18px;
+}
+
+.important {
+  color: var(--secondary);
+  font-weight: bold;
+}

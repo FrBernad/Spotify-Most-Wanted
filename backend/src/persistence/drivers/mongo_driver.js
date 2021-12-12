@@ -31,7 +31,7 @@ class MongoDriver {
         } catch (e) {
             // Ensures that the client will close when you finish/error
             debug("Error connecting to Mongo database");
-            this.closeConnection();
+            await this.closeConnection();
         }
     }
 

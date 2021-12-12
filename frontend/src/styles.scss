@@ -3,11 +3,15 @@
 :root {
   --primary: #FFFFFF;
   --secondary: #F7743C;
+  --tertiary: #241455;
 }
 
 @font-face {
   font-family: 'ReadexPro';
-  src: url('/assets/fonts/ReadexPro/ReadexPro-VariableFont_wght.ttf') format('truetype');
+  src: url('/assets/fonts/ReadexPro/ReadexPro-ExtraLight.ttf') format('truetype') font-weight-lighter,
+  url('/assets/fonts/ReadexPro/ReadexPro-Light.ttf') format('truetype') font-weight-light,
+  url('/assets/fonts/ReadexPro/ReadexPro-Regular.ttf') format('truetype') font-weight-medium,
+  url('/assets/fonts/ReadexPro/ReadexPro-Bold.ttf') format('truetype') font-weight-bold;
 }
 
 * {
@@ -19,9 +23,33 @@
   --quinary-color: #676767;
 }
 
+.txt-primary {
+  color: var(--primary);
+}
+
+.txt-primary-faded {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.txt-secondary {
+  color: var(--secondary);
+}
+
+.txt-tertiary {
+  color: var(--tertiary);
+}
+
+p {
+  margin: 0;
+}
+
 .outerContainer {
-  background: rgb(36, 20, 85);
   background: linear-gradient(180deg, rgba(36, 20, 85, 1) 25%, rgba(77, 43, 177, 1) 100%);
   width: 100%;
   min-height: 100vh;
+}
+
+#particlesContainer {
+  width: 100%;
+  height: 100%;
 }

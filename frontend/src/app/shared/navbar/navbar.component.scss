@@ -1,0 +1,18 @@
+.navbar-text{
+  font-size: 18px;
+  color: var(--primary)
+}
+
+.navbar-text:hover{
+  color: rgba(255,255,255,0.8);
+}
+
+.active {
+  color: var(--secondary);
+  font-weight: bold;
+}
+
+.active:hover{
+  color: rgb(247, 116, 60, 0.8);
+  font-weight: bold;
+}

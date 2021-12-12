@@ -1,1 +1,83 @@
-<p>landing-page works!</p>
+<div class="container-fluid px-0 min-vh-100 d-flex flex-column">
+  <div class="col-12 flex-grow-0" style="z-index: 50">
+    <app-navbar></app-navbar>
+  </div>
+  <div class="col-12 flex-grow-1 d-flex justify-content-center align-items-center">
+    <div class="container-lg">
+      <div class="row">
+        <div class="col-12">
+          <h1 class="txt-primary fw-bolder main-header text-center">
+            Spotify Most Wanted
+          </h1>
+          <h2 class="txt-secondary fw-bolder secondary-header text-center">
+            Songs, Artists and albums.
+          </h2>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-particles [id]="id" [url]="particlesUrl" class="position-absolute h-100 w-100"></ng-particles>
+</div>
+<div class="container-fluid px-0 info-section py-5">
+  <div class="container-lg py-5">
+    <div class="row align-content-between">
+      <div class="col-12">
+        <h1 class="section-title">How it works</h1>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="container-fluid px-0 info-container">
+          <div class="row">
+            <div class="col-12 my-3 d-flex justify-content-start align-items-center">
+              <fa-icon [icon]="['fas','music']" size="2x" class="icons-color"></fa-icon>
+            </div>
+            <div class="col-12">
+              <h3 class="section-subtitle">Search Songs</h3>
+            </div>
+            <div class="col-12">
+              <p class="info-text">
+                Search Spotify's most popular <span class="important">songs</span> from the Top 200 daily chart of the last three years.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="container-fluid px-0 info-container">
+          <div class="row">
+            <div class="col-12 my-3 d-flex justify-content-start align-items-center">
+              <fa-icon [icon]="['fas','microphone']" size="2x" class="icons-color"></fa-icon>
+            </div>
+            <div class="col-12">
+              <h3 class="section-subtitle">Search Artists</h3>
+            </div>
+            <div class="col-12">
+              <p class="info-text">
+                Search Spotify's most popular <span class="important">artists</span> of the last three years.
+                Discover which artists he collaborated with and more!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="container-fluid px-0 info-container">
+          <div class="row">
+            <div class="col-12 my-3 d-flex justify-content-start align-items-center">
+              <fa-icon [icon]="['fas','record-vinyl']" size="2x" class="icons-color"></fa-icon>
+            </div>
+            <div class="col-12">
+              <h3 class="section-subtitle">Search Albums</h3>
+              <div class="col-12">
+                <p class="info-text">
+                  Search Spotify's most popular <span class="important">albums</span> from the Top 200 daily chart of the last three years.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
