@@ -35,6 +35,22 @@ class SearchService {
         return new PaginatedResult(page, itemsPerPage, totalItems, results);
     }
 
+    async getMostPopularArtists(country, genre, page, itemsPerPage){
+       
+
+        page = parseInt(page);
+        itemsPerPage = parseInt(itemsPerPage);
+
+        if (isNaN(page) || isNaN(itemsPerPage) || page < 0 || itemsPerPage < 0) {
+            debug(`Invalid params country:${!country ? "any" : country} genre:${!genre ? "any" : genre} (page:${page}, itemsPerPage:${itemsPerPage})`);
+            return null;
+        }
+
+        const totalItems = await this._artistDao.getMostPopularArtistsCount(country,genre);
+        const results = await this._artistDao.getMostPopularArtists(country,genre,page,itemsPerPage);
+        return new PaginatedResult(page,itemsPerPage,totalItems,results);
+    }
+
 }
 
 const searchService = new SearchService();

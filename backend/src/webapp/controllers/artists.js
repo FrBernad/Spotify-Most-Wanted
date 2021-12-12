@@ -1,19 +1,40 @@
-const { response } = require('express');
 const express = require('express');
+const { getOrDefault, createPaginationResponse } = require("@webapp/utils/request_utils");
 const router = express.Router();
 let searchService;
 require("@services/search_service")().then(service => searchService = service);
 
-/* GET users listing. */
-router.get('/', async function (req, res, next) {
-    results = await searchService.getMostPopularSongsByArtist("Lil Xan", 0, 5);
+const _DEFAULT_PAGE = "0";
+const _DEFAULT_ITEMS_PER_PAGE = "5";
+
+
+router.get('/', async function(req, res, next) {
+    const queryParams = req.query;
+
+    const page = getOrDefault(queryParams.page, _DEFAULT_PAGE);
+    const itemsPerPage = getOrDefault(queryParams.itemsPerPage, _DEFAULT_ITEMS_PER_PAGE);
+    const country = getOrDefault(queryParams.country, "");
+    const genre = getOrDefault(queryParams.genre, "");
+
+    const results = await searchService.getMostPopularArtists(country,genre,page,itemsPerPage);
+    console.log(results);
     if (!results) {
         res.sendStatus(400);
         return;
     }
 
-    res.send(results);
-});
+    const searchParams = new URLSearchParams();
+
+    if (!!country) {
+        searchParams.append("country", country)
+    }
+    if (!!genre) {
+        searchParams.append("genre", genre)
+    }
+
+    createPaginationResponse(req, res, searchParams, results);
+
+  });
 
 module.exports = router;
 

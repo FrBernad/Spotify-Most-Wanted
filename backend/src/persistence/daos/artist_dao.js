@@ -1,5 +1,8 @@
-class ArtistDao {
+const debug = require('debug')('backend:server');
+// const daoUtils = require('@persistence/daos/utils/dao_utils');
 
+class ArtistDao {
+    
     constructor() {
         if (!ArtistDao.instance) {
             this._isInitialized = false;
@@ -14,24 +17,119 @@ class ArtistDao {
         this._neoDriver = await require("@persistence/drivers/neo_driver")();
     }
 
-    async _executeQuery(query, variables) {
-        const session = this._client.session();
-        let result;
+    async getMostPopularArtists(country, genre, page, itemsPerPage) {
+
         try {
-            result = await session.readTransaction(tx =>
-                tx.run(query, variables)
-            )
+
+            const match = this._generateMatch(null, country, genre);
+
+            const pipeline = this.generateResultsPipeline(match, page, itemsPerPage);
+
+            return await this._mongoDriver.executeAggregationQuery(pipeline);
+
         } catch (error) {
-            debug(`unable to execute Neo query. ${error}`)
-        } finally {
-            await session.close()
-            return result.records;
+            debug(error);
+            return null;
         }
     }
 
-    async getArtists(){
-        const artists = await this._neoDriver.executeQuery('MATCH (n:Artist) RETURN n LIMIT 25');
-        return artists;
+    async getMostPopularArtistsCount(country, genre) {
+        try {
+            const match = daoUtils.generateMatch(null, country, genre);
+
+            match.push(
+                {
+                    $project: {
+                        _id: 0,
+                        key: {$setUnion: [["$artist"], "$co_artists"]},
+                        value: {title: "$title", popularity: "$popularity", uri: "$uri"}
+                    }
+                });
+
+            match.push({$unwind: "$key"});
+
+            match.push({$group: {"_id": "$key", "songs": {"$push": "$value"}}});
+
+            const pipeline = daoUtils.generateCountPipeline(match,null);
+
+            const result = await this._mongoDriver.executeAggregationQuery(pipeline);
+            return result[0].totalItems;
+
+        } catch (error) {
+            debug(error);
+            return null;
+        }
+    }
+
+
+    _generateCountPipeline(match) {
+        const pipeline = [];
+
+        if (!!match) {
+            pipeline.push(match);
+        }
+        pipeline.push(
+            {
+                $project: {
+                    _id: 0,
+                    key: {$setUnion: [["$artist"], "$co_artists"]},
+                    value: {title: "$title", popularity: "$popularity", uri: "$uri"}
+                }
+            });
+
+        pipeline.push({$unwind: "$key"});
+
+        pipeline.push({$group: {"_id": "$key", "songs": {"$push": "$value"}}});
+
+        pipeline.push({$count: "totalItems"})
+
+        return pipeline;
+    }
+
+
+    _generateMatch(artist, country, genre) {
+
+        const match = [];
+        if (!!artist) {
+            match.push({ $or: [{ artist: artist }, { co_artists: artist }] })
+        }
+        if (!!country) {
+            match.push({ countries: country })
+        }
+        if (!!genre) {
+            match.push({ genre: genre })
+        }
+        if (!match.length) {
+            return null;
+        }
+        return {
+            $match: { $and: match }
+        }
+    }
+
+    generateResultsPipeline(match, page, itemsPerPage) {
+        const pipeline = [];
+
+        if (!!match) {
+            pipeline.push(match);
+        }
+
+        pipeline.push(
+            {
+                $project: {
+                    _id: 0,
+                    key: {$setUnion: [["$artist"], "$co_artists"]},
+                    value: {title: "$title", popularity: "$popularity", uri: "$uri"}
+                }
+            });
+
+        pipeline.push({$unwind: "$key"});
+
+        pipeline.push({$group: {"_id": "$key", "songs": {"$push": "$value"}}});
+
+        pipeline.push({ $skip: page * itemsPerPage }, { $limit: itemsPerPage })
+
+        return pipeline;
     }
 
 }
