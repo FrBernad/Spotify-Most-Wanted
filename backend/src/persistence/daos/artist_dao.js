@@ -23,7 +23,20 @@ class ArtistDao {
 
             const match = daoUtils.generateMatch(null, country, genre);
 
-            const pipeline = this._generateResultsPipeline(match, page, itemsPerPage);
+            let project =
+                {
+                    $project: {
+                        _id: 0,
+                        key: {$setUnion: [["$artist"], "$co_artists"]},
+                        value: {title: "$title", popularity: "$popularity", uri: "$uri"}
+                    }
+                };
+
+            let unwind = {$unwind: "$key"};
+
+            let group = {$group: {"_id": "$key", "songs": {"$push": "$value"}}};
+
+            const pipeline = daoUtils.generateResultsPipeline(match,project, unwind,group,page, itemsPerPage);
 
             return await this._mongoDriver.executeAggregationQuery(pipeline);
 
@@ -37,22 +50,20 @@ class ArtistDao {
         try {
             const match = daoUtils.generateMatch(null, country, genre);
 
-            let extra = [];
-
-            extra.push(
+            let project =
                 {
                     $project: {
                         _id: 0,
                         key: {$setUnion: [["$artist"], "$co_artists"]},
                         value: {title: "$title", popularity: "$popularity", uri: "$uri"}
                     }
-                });
+                };
 
-            extra.push({$unwind: "$key"});
+            let unwind = {$unwind: "$key"};
 
-            extra.push({$group: {"_id": "$key", "songs": {"$push": "$value"}}});
+            let group = {$group: {"_id": "$key", "songs": {"$push": "$value"}}};
 
-            const pipeline = daoUtils.generateCountPipeline(match,extra);
+            const pipeline = daoUtils.generateCountPipeline(match, project,unwind,group);
 
             const result = await this._mongoDriver.executeAggregationQuery(pipeline);
             return result[0].totalItems;
@@ -63,30 +74,6 @@ class ArtistDao {
         }
     }
 
-    _generateResultsPipeline(match, page, itemsPerPage) {
-        const pipeline = [];
-
-        if (!!match) {
-            pipeline.push(match);
-        }
-
-        pipeline.push(
-            {
-                $project: {
-                    _id: 0,
-                    key: {$setUnion: [["$artist"], "$co_artists"]},
-                    value: {title: "$title", popularity: "$popularity", uri: "$uri"}
-                }
-            });
-
-        pipeline.push({$unwind: "$key"});
-
-        pipeline.push({$group: {"_id": "$key", "songs": {"$push": "$value"}}});
-
-        pipeline.push({ $skip: page * itemsPerPage }, { $limit: itemsPerPage })
-
-        return pipeline;
-    }
 
 }
 
