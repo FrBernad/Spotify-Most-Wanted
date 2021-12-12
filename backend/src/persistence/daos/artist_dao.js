@@ -1,8 +1,8 @@
 const debug = require('debug')('backend:server');
-// const daoUtils = require('@persistence/daos/utils/dao_utils');
+const daoUtils = require('@persistence/daos/utils/dao_utils');
 
 class ArtistDao {
-    
+
     constructor() {
         if (!ArtistDao.instance) {
             this._isInitialized = false;
@@ -21,9 +21,9 @@ class ArtistDao {
 
         try {
 
-            const match = this._generateMatch(null, country, genre);
+            const match = daoUtils.generateMatch(null, country, genre);
 
-            const pipeline = this.generateResultsPipeline(match, page, itemsPerPage);
+            const pipeline = this._generateResultsPipeline(match, page, itemsPerPage);
 
             return await this._mongoDriver.executeAggregationQuery(pipeline);
 
@@ -37,7 +37,9 @@ class ArtistDao {
         try {
             const match = daoUtils.generateMatch(null, country, genre);
 
-            match.push(
+            let extra = [];
+
+            extra.push(
                 {
                     $project: {
                         _id: 0,
@@ -46,11 +48,11 @@ class ArtistDao {
                     }
                 });
 
-            match.push({$unwind: "$key"});
+            extra.push({$unwind: "$key"});
 
-            match.push({$group: {"_id": "$key", "songs": {"$push": "$value"}}});
+            extra.push({$group: {"_id": "$key", "songs": {"$push": "$value"}}});
 
-            const pipeline = daoUtils.generateCountPipeline(match,null);
+            const pipeline = daoUtils.generateCountPipeline(match,extra);
 
             const result = await this._mongoDriver.executeAggregationQuery(pipeline);
             return result[0].totalItems;
@@ -61,53 +63,7 @@ class ArtistDao {
         }
     }
 
-
-    _generateCountPipeline(match) {
-        const pipeline = [];
-
-        if (!!match) {
-            pipeline.push(match);
-        }
-        pipeline.push(
-            {
-                $project: {
-                    _id: 0,
-                    key: {$setUnion: [["$artist"], "$co_artists"]},
-                    value: {title: "$title", popularity: "$popularity", uri: "$uri"}
-                }
-            });
-
-        pipeline.push({$unwind: "$key"});
-
-        pipeline.push({$group: {"_id": "$key", "songs": {"$push": "$value"}}});
-
-        pipeline.push({$count: "totalItems"})
-
-        return pipeline;
-    }
-
-
-    _generateMatch(artist, country, genre) {
-
-        const match = [];
-        if (!!artist) {
-            match.push({ $or: [{ artist: artist }, { co_artists: artist }] })
-        }
-        if (!!country) {
-            match.push({ countries: country })
-        }
-        if (!!genre) {
-            match.push({ genre: genre })
-        }
-        if (!match.length) {
-            return null;
-        }
-        return {
-            $match: { $and: match }
-        }
-    }
-
-    generateResultsPipeline(match, page, itemsPerPage) {
+    _generateResultsPipeline(match, page, itemsPerPage) {
         const pipeline = [];
 
         if (!!match) {
