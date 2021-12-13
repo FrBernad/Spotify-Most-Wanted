@@ -18,4 +18,8 @@ export class SongComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  getDate(){
+    return new Date(this.song.release_date);
+  }
+
 }

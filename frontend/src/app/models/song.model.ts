@@ -7,11 +7,12 @@ export class Song {
     public countries: string[],
     public genre: string,
     public popularity: number,
-    public release_date: Date,
+    public release_date: string,
     public tempo: number,
     public title: string,
     public uri: string,
     public _id: string
   ) {
   }
+
 }

@@ -1,5 +1,5 @@
 <div class="container-fluid song-container d-flex" (mouseenter)="this.showBtn=true" (mouseleave)="this.showBtn=false">
-  <div class="row position-relative flex-grow-1">
+  <div class="row position-relative flex-grow-1 align-content-between">
     <a [href]="song.uri" class="position-absolute play-href" target="_blank">
       <button class="play-btn d-flex align-items-center justify-content-center"
               [ngClass]="{'d-none': !this.showBtn}" type="button">
@@ -10,19 +10,28 @@
       <h1 class="txt-primary">{{song.title}}</h1>
     </div>
     <div class="col-12">
-      <p class="txt-primary">
-        <span>{{song.artist}}</span>
-        <span *ngFor="let coa of song.co_artists">{{coa}}</span>
-      </p>
-    </div>
-    <div class="col-12">
-      <p class="txt-primary">
-        {{song.genre}}
-      </p>
-    </div>
-    <div class="col-12">
-      <p>
-      </p>
+      <div class="container-fluid px-0">
+        <div class="row">
+          <div class="col-12">
+            <p class="txt-primary">
+              <span>{{song.artist}}</span>
+              <span *ngFor="let coa of song.co_artists; last as isLast; first as isFirst">
+                {{isFirst ? 'ft ' : ''}}{{coa}}{{isLast ? '' : ','}}
+              </span>
+            </p>
+          </div>
+          <div class="col-12">
+            <p class="txt-primary">
+              {{song.genre | titlecase}}
+            </p>
+          </div>
+          <div class="col-12">
+            <p class="txt-primary">
+              {{getDate().toDateString() | date:'shortDate'}}
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
