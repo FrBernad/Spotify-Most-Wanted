@@ -17,7 +17,7 @@ router.get('/', async function(req, res, next) {
     const genre = getOrDefault(queryParams.genre, "");
 
     const results = await searchService.getMostPopularArtists(country,genre,page,itemsPerPage);
-    console.log(results);
+
     if (!results) {
         res.sendStatus(400);
         return;

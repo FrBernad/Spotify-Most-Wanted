@@ -15,6 +15,7 @@ class SearchService {
     async _init() {
         this._songsDao = await require("@persistence/daos/song_dao")();
         this._artistDao = await require("@persistence/daos/artist_dao")();
+        this._extraInfoDao = await require("@persistence/daos/extraInfo_dao")();
     }
 
     async getMostPopularSongs(artist, country, genre, page, itemsPerPage) {
@@ -49,6 +50,10 @@ class SearchService {
         const totalItems = await this._artistDao.getMostPopularArtistsCount(country,genre);
         const results = await this._artistDao.getMostPopularArtists(country,genre,page,itemsPerPage);
         return new PaginatedResult(page,itemsPerPage,totalItems,results);
+    }
+
+    async getAllCountries(){
+        return await this._extraInfoDao.getCountries();
     }
 
 }

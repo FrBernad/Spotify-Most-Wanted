@@ -38,7 +38,7 @@ class SongsDao {
 
             const match = daoUtils.generateMatch(artist, country, genre);
 
-            const pipeline = daoUtils.generateResultsPipeline(match,null,null,null, page, itemsPerPage);
+            const pipeline = daoUtils.generateResultsPipeline(match,null,null,null,null, page, itemsPerPage);
 
             return await this._mongoDriver.executeAggregationQuery(pipeline);
 

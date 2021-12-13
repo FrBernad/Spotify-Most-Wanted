@@ -1,43 +1,49 @@
 class DaoUtils {
 
-    static generateResultsPipeline(match,project,unwind,group,page, itemsPerPage) {
+    static generateResultsPipeline(match, project, unwind, group, sort, page, itemsPerPage) {
         const pipeline = [];
 
         if (!!match) {
             pipeline.push(match);
         }
 
-        if(!!project){
+        if (!!project) {
             pipeline.push(project);
         }
-        if(!!unwind){
+        if (!!unwind) {
             pipeline.push(unwind);
         }
 
-        if(!!group){
+        if (!!group) {
             pipeline.push(group);
         }
 
-        pipeline.push({$skip: page * itemsPerPage}, {$limit: itemsPerPage})
+        if (!!sort) {
+            pipeline.push(sort);
+        }
+
+        if (!!page && !!itemsPerPage){
+            pipeline.push({$skip: page * itemsPerPage}, {$limit: itemsPerPage})
+        }
 
         return pipeline;
     }
 
-    static generateCountPipeline(match,project,unwind,group) {
+    static generateCountPipeline(match, project, unwind, group) {
         const pipeline = [];
 
         if (!!match) {
             pipeline.push(match);
         }
 
-        if(!!project){
+        if (!!project) {
             pipeline.push(project);
         }
-        if(!!unwind){
+        if (!!unwind) {
             pipeline.push(unwind);
         }
 
-        if(!!group){
+        if (!!group) {
             pipeline.push(group);
         }
 
