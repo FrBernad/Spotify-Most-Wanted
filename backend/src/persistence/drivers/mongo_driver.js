@@ -43,8 +43,9 @@ class MongoDriver {
     }
 
     async executeAggregationQuery(pipeline) {
-        debug("Executing aggregation query with pipeline:\n\t" + JSON.stringify(pipeline));
         pipeline = pipeline.filter(stage => stage !== null);
+
+        debug("Executing aggregation query with pipeline:\n\t" + JSON.stringify(pipeline));
 
         const results = this._db.collection(MongoDriver._COLLECTION).aggregate(pipeline);
         return await results.toArray()

@@ -19,14 +19,10 @@ class CountriesDao {
     async getCountries() {
 
         try {
-
-            let project = {$project: {_id: 0, countries: 1}};
-
-            let unwind = {$unwind: "$countries"};
-
-            let group = {$group: {"_id": "$countries"}};
-
-            let sort = {$sort: {_id: 1}};
+            const project = {$project: {_id: 0, countries: 1}};
+            const unwind = {$unwind: "$countries"};
+            const group = {$group: {"_id": "$countries"}};
+            const sort = {$sort: {_id: 1}};
 
             const pipeline = [project, unwind, group, sort];
 

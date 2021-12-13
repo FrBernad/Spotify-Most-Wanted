@@ -40,7 +40,7 @@ class SongsDao {
             const match = daoUtils.generateMatch(artist, country, genre);
             const offsetAndLimit = daoUtils.generateOffsetAndLimit(page, itemsPerPage);
 
-            const pipeline = [match, offsetAndLimit];
+            const pipeline = [match, ...offsetAndLimit];
 
             return await this._mongoDriver.executeAggregationQuery(pipeline);
 

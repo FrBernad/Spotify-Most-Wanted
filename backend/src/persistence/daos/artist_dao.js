@@ -35,7 +35,7 @@ class ArtistDao {
             const sort = {$sort: {_id: 1}};
             const offsetAndLimit = daoUtils.generateOffsetAndLimit(page, itemsPerPage);
 
-            const pipeline = [match, project, unwind, group, sort, offsetAndLimit];
+            const pipeline = [match, project, unwind, group, sort, ...offsetAndLimit];
 
             return await this._mongoDriver.executeAggregationQuery(pipeline);
 

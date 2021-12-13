@@ -1,13 +1,13 @@
 class DaoUtils {
 
     static generateOffsetAndLimit(page, itemsPerPage) {
-        const pipeline = [];
+        const offsetAndLimit = [];
 
         if (page !== null && itemsPerPage !== null) {
-            pipeline.push({$skip: page * itemsPerPage}, {$limit: itemsPerPage})
+            offsetAndLimit.push({$skip: page * itemsPerPage}, {$limit: itemsPerPage})
         }
 
-        return pipeline;
+        return offsetAndLimit;
     }
 
     static generateMatch(artist, country, genre) {

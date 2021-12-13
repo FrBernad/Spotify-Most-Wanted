@@ -36,9 +36,8 @@ class AlbumDao {
 
     async getMostPopularAlbums(artist, country, genre, page, itemsPerPage) {
         try {
-
             const match = daoUtils.generateMatch(artist, country, genre);
-            let project = {
+            const project = {
                 $project: {
                     _id: 0,
                     album: {AlbumName: "$album", By: "$artist"},
@@ -50,11 +49,11 @@ class AlbumDao {
                     }
                 }
             };
-            let group = {$group: {"_id": "$album", "songs": {"$push": "$value"}}};
-            let sort = {$sort: {_id: 1}};
+            const group = {$group: {"_id": "$album", "songs": {"$push": "$value"}}};
+            const sort = {$sort: {_id: 1}};
             const offsetAndLimit = daoUtils.generateOffsetAndLimit(page, itemsPerPage);
 
-            const pipeline = [match, project, group, sort, offsetAndLimit];
+            const pipeline = [match, project, group, sort, ...offsetAndLimit];
 
             return await this._mongoDriver.executeAggregationQuery(pipeline);
 
