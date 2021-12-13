@@ -74,6 +74,7 @@ class SearchService {
         }
 
         debug(`Searching most popular albums artist:${!artist ? "any" : artist} country:${!country ? "any" : country} genre:${!genre ? "any" : genre} (page:${page}, itemsPerPage:${itemsPerPage})`);
+
         const totalItems = await this._albumDao.getMostPopularAlbumsCount(artist, country, genre);
         const results = await this._albumDao.getMostPopularAlbums(artist, country, genre, page, itemsPerPage);
 

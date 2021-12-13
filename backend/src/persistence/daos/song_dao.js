@@ -20,8 +20,9 @@ class SongsDao {
     async getMostPopularSongsCount(artist, country, genre) {
         try {
             const match = daoUtils.generateMatch(artist, country, genre);
+            const count = {$count: "totalItems"}
 
-            const pipeline = daoUtils.generateCountPipeline(match);
+            const pipeline = [match, count];
 
             const result = await this._mongoDriver.executeAggregationQuery(pipeline);
 
@@ -37,8 +38,9 @@ class SongsDao {
         try {
 
             const match = daoUtils.generateMatch(artist, country, genre);
+            const offsetAndLimit = daoUtils.generateOffsetAndLimit(page, itemsPerPage);
 
-            const pipeline = daoUtils.generateResultsPipeline(match, null, null, null, null, page, itemsPerPage);
+            const pipeline = [match, offsetAndLimit];
 
             return await this._mongoDriver.executeAggregationQuery(pipeline);
 

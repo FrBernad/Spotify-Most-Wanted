@@ -28,7 +28,7 @@ class CountriesDao {
 
             let sort = {$sort: {_id: 1}};
 
-            const pipeline = daoUtils.generateResultsPipeline(null, project, unwind, group, sort, null, null);
+            const pipeline = [project, unwind, group, sort];
 
             return await this._mongoDriver.executeAggregationQuery(pipeline);
 

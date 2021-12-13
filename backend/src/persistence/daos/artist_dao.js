@@ -22,8 +22,7 @@ class ArtistDao {
         try {
 
             const match = daoUtils.generateMatch(null, country, genre);
-
-            let project =
+            const project =
                 {
                     $project: {
                         _id: 0,
@@ -31,14 +30,12 @@ class ArtistDao {
                         value: {title: "$title", popularity: "$popularity", uri: "$uri"}
                     }
                 };
+            const unwind = {$unwind: "$key"};
+            const group = {$group: {"_id": "$key", "songs": {"$push": "$value"}}};
+            const sort = {$sort: {_id: 1}};
+            const offsetAndLimit = daoUtils.generateOffsetAndLimit(page, itemsPerPage);
 
-            let unwind = {$unwind: "$key"};
-
-            let group = {$group: {"_id": "$key", "songs": {"$push": "$value"}}};
-
-            let sort = {$sort: {_id:1}};
-
-            const pipeline = daoUtils.generateResultsPipeline(match, project, unwind, group, sort, page, itemsPerPage);
+            const pipeline = [match, project, unwind, group, sort, offsetAndLimit];
 
             return await this._mongoDriver.executeAggregationQuery(pipeline);
 
@@ -51,8 +48,7 @@ class ArtistDao {
     async getMostPopularArtistsCount(country, genre) {
         try {
             const match = daoUtils.generateMatch(null, country, genre);
-
-            let project =
+            const project =
                 {
                     $project: {
                         _id: 0,
@@ -60,12 +56,11 @@ class ArtistDao {
                         value: {title: "$title", popularity: "$popularity", uri: "$uri"}
                     }
                 };
+            const unwind = {$unwind: "$key"};
+            const group = {$group: {"_id": "$key", "songs": {"$push": "$value"}}};
+            const count = {$count: "totalItems"};
 
-            let unwind = {$unwind: "$key"};
-
-            let group = {$group: {"_id": "$key", "songs": {"$push": "$value"}}};
-
-            const pipeline = daoUtils.generateCountPipeline(match, project, unwind, group);
+            const pipeline = [match, project, unwind, group, count];
 
             const result = await this._mongoDriver.executeAggregationQuery(pipeline);
             return result[0].totalItems;
