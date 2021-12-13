@@ -98,6 +98,20 @@ class SearchService {
         return results;
     }
 
+    async getGetAllGenres(){
+
+         debug(`Searching all genres`);
+
+         const results = await this._songsDao.getGenres();
+
+         if(!results){
+             throw new Error("500");
+         }
+
+         return results;
+
+    }
+
 }
 
 const searchService = new SearchService();

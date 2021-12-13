@@ -40,5 +40,21 @@ router.get('/', async function (req, res, next) {
 
 });
 
+router.get('/genres', async function (req, res, next) {
+
+    let results;
+
+    try {
+        results = await searchService.getGetAllGenres();
+    } catch (e) {
+        res.sendStatus(parseInt(e.message));
+        return;
+    }
+
+        res.send(results);
+
+});
+
+
 module.exports = router;
 

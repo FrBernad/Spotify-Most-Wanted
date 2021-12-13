@@ -50,6 +50,25 @@ class SongsDao {
         }
     }
 
+    async getGenres(){
+
+        try {
+
+            const group = {$group:{"_id":"$genre",count:{"$sum":1}}};
+            const project = {$project:{_id:0,genre:"$_id",amount:"$count"}};
+            const sort =  {$sort:{genre:1}};
+
+            const pipeline = [group,project,sort];
+
+            return await this._mongoDriver.executeAggregationQuery(pipeline);
+
+        } catch (error) {
+            debug(error);
+            return null;
+        }
+
+    }
+
 }
 
 const songsDao = new SongsDao();
