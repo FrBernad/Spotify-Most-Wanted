@@ -9,6 +9,8 @@ const songsRouter = require('@webapp/controllers/songs');
 const countriesRouter = require('@webapp/controllers/countries');
 const albumsRouter = require('@webapp/controllers/albums');
 
+const {cacheFilter, noCacheFilter} = require('@webapp/utils/request_utils')
+
 const app = express();
 
 app.use(logger('dev'));
@@ -16,11 +18,11 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 
-app.use('/api', indexRouter);
-app.use('/api/artists', artistsRouter);
-app.use('/api/songs', songsRouter);
-app.use('/api/countries', countriesRouter);
-app.use('/api/albums',albumsRouter);
+app.use('/api', [noCacheFilter, indexRouter]);
+app.use('/api/artists', [noCacheFilter, artistsRouter]);
+app.use('/api/songs', [noCacheFilter, songsRouter]);
+app.use('/api/countries', [cacheFilter, countriesRouter]);
+app.use('/api/albums', [noCacheFilter, albumsRouter]);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

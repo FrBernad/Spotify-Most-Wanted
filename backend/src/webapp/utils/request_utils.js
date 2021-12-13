@@ -63,4 +63,30 @@ function getRequestUri(req) {
     return `${req.protocol}://${req.headers.host}${req.baseUrl}${req.path}`;
 }
 
-module.exports = {getOrDefault, addPaginationHeaders, getRequestUri, createPaginationResponse};
+function cacheFilter(req, res, next) {
+
+    // 1 year cache
+    const period = 31536000;
+
+    // you only want to cache for GET requests
+    if (req.method === 'GET') {
+        res.set('Cache-control', `public, max-age=${period}`);
+    } else {
+        // for the other requests set strict no caching parameters
+        res.set('Cache-control', 'no-cache, no-store, max-age=0, must-revalidate');
+        res.set('Pragma', 'no-cache');
+        res.set('Expires', '0');
+    }
+
+    next();
+}
+
+function noCacheFilter(req, res, next) {
+    res.set('Cache-control', 'no-cache, no-store, max-age=0, must-revalidate');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+
+    next();
+}
+
+module.exports = {getOrDefault, addPaginationHeaders, getRequestUri, createPaginationResponse, cacheFilter, noCacheFilter};
