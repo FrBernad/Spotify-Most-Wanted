@@ -10,7 +10,7 @@ export class SongComponent implements OnInit {
 
   @Input("song") song: Song;
 
-  showBtn = false;
+  hovered = false;
 
   constructor() {
   }
@@ -18,7 +18,7 @@ export class SongComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  getDate(){
+  getDate() {
     return new Date(this.song.release_date);
   }
 

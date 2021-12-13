@@ -26,8 +26,7 @@ export interface SongPaginationQuery {
   itemsPerPage?: number;
 }
 
-export interface AlbumPaginationQuery {
-  artist?: string;
+export interface ArtistPaginationQuery {
   genre?: string;
   country?: string;
   page: number;
@@ -77,7 +76,7 @@ export class SearchService {
   getAlbums(query: AlbumPaginationQuery) {
     this.http
       .get<Album[]>(
-        environment.apiBaseUrl + '/artists',
+        environment.apiBaseUrl + '/albums',
         {
           observe: "response",
           params: new HttpParams({fromObject: {...query}})

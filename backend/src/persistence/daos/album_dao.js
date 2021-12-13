@@ -36,7 +36,7 @@ class AlbumDao {
 
             const count = {$count: "totalItems"};
 
-            const pipeline = [match,project1,group, count];
+            const pipeline = [match, project1, group, count];
 
             const result = await this._mongoDriver.executeAggregationQuery(pipeline);
 
@@ -54,8 +54,8 @@ class AlbumDao {
             const project1 = {
                 $project: {
                     _id: 0,
-                    album: {albumName: "$album", by: "$artist"},
-                    value: {
+                    album: {title: "$album", author: "$artist"},
+                    songs: {
                         title: "$title",
                         popularity: "$popularity",
                         uri: "$uri",
@@ -63,12 +63,12 @@ class AlbumDao {
                     }
                 }
             };
-            const group = {$group: {"_id": "$album", "songs": {"$addToSet": "$value"}}};
-            const project2 ={$project:{_id:0,album:"$_id.albumName",by:"$_id.by",songs:"$songs"}};
-            const sort = {$sort: {album: 1}};
+            const group = {$group: {"_id": "$album", "songs": {"$addToSet": "$songs"}}};
+            const project2 = {$project: {_id: 0, title: "$_id.title", author: "$_id.author", songs: "$songs"}};
+            const sort = {$sort: {title: 1}};
             const offsetAndLimit = daoUtils.generateOffsetAndLimit(page, itemsPerPage);
 
-            const pipeline = [match, project1, group, project2,sort, ...offsetAndLimit];
+            const pipeline = [match, project1, group, project2, sort, ...offsetAndLimit];
 
             return await this._mongoDriver.executeAggregationQuery(pipeline);
 

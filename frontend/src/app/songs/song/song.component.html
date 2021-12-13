@@ -1,8 +1,10 @@
-<div class="container-fluid song-container d-flex" (mouseenter)="this.showBtn=true" (mouseleave)="this.showBtn=false">
+<div class="container-fluid song-container d-flex"
+     (mouseenter)="this.hovered=true" (mouseleave)="this.hovered=false"
+>
   <div class="row position-relative flex-grow-1 align-content-between">
     <a [href]="song.uri" class="position-absolute play-href" target="_blank">
       <button class="play-btn d-flex align-items-center justify-content-center"
-              [ngClass]="{'d-none': !this.showBtn}" type="button">
+              [ngClass]="{'d-none': !this.hovered}" type="button">
         <fa-icon [icon]="['fas','play']" class="play-icon"></fa-icon>
       </button>
     </a>

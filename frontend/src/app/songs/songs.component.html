@@ -15,7 +15,7 @@
                       <label for="Artist" class="form-label search-element-label txt-primary">Artist</label>
                     </div>
                     <div class="col-12">
-                      <input #artist type="text" (keypress)="onChangeArtist($event)"
+                      <input type="text" (keypress)="onChangeArtist($event)"
                              [(ngModel)]="selectedArtist"
                              class="search-element form-control w-100"
                              id="Artist" placeholder="artist">
@@ -31,7 +31,7 @@
                     <div class="col-12">
                       <input type="text" (keypress)="onChangeGenre($event)"
                              [(ngModel)]="selectedGenre"
-                             #genre class="search-element form-control w-100" id="Genre" placeholder="genre">
+                             class="search-element form-control w-100" id="Genre" placeholder="genre">
                     </div>
                   </div>
                 </div>

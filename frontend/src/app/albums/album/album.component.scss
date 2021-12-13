@@ -1,0 +1,15 @@
+.song-container {
+  background: rgba(255, 255, 255, .1);
+  height: 225px;
+  border-radius: 8px;
+  padding: 1.25rem;
+  transition: background-color .3s ease;
+}
+
+.song-container:hover {
+  background: rgba(255, 255, 255, .2);
+}
+
+.field-text {
+  font-size: 20px;
+}

@@ -97,6 +97,7 @@ export class SongsComponent implements OnInit, OnDestroy {
   onSearch() {
     this.query.page = 0;
     this.query.artist = this.selectedArtist;
+    this.query.country = this.selectedCountry;
     this.query.genre = this.selectedGenre;
     this.updateRoute();
   }
