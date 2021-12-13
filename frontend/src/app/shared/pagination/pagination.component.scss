@@ -1,5 +1,5 @@
 .pag-item.active {
-  background-color: var(--secondary)!important;
+  background-color: var(--secondary) !important;
   box-shadow: 0 2px 5px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 10%);
 }
 
@@ -42,4 +42,6 @@
   border: none;
   text-align: center;
   font-size: .9rem;
+  padding-left: 0.841rem !important;
+  padding-right: 0.841rem !important;
 }

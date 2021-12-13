@@ -1,9 +1,9 @@
-<div class="container-lg mt-4">
-  <div class="row">
+<div class="container-lg mt-4 d-flex">
+  <div class="row d-flex flex-grow-1 flex-column">
 
     <!--  SEARCH -->
-    <div class="col-12">
-      <div class="container-fluid px-0 w-100">
+    <div class="col-12 flex-grow-0">
+      <div class="container-fluid px-0">
         <div class="row">
           <div class="col-12">
             <div class="container-fluid px-0">
@@ -46,26 +46,52 @@
     </div>
 
     <!--  RESULTS SECTION -->
-    <div class="col-12 my-4">
-      <div class="container-fluid px-0">
-        <div class="row align-content-between justify-content-center">
-          <!--  RESULTS  -->
-          <div class="col-12">
-            <div class="container-fluid px-0">
-              <div class="row">
-                <div *ngFor="let song of response.results" class="col-4 mt-4">
-                  <app-song [song]="song"></app-song>
+    <div class="col-12 my-4 flex-grow-1 d-flex">
+      <div class="container-fluid px-0 flex-grow-1 d-flex">
+        <ng-container *ngIf="loading; else NOT_LOADING">
+          <div class="h-100 w-100 position-relative">
+            <ngx-spinner
+              bdColor="rgba(0,0,0,0)"
+              size="medium"
+              color="#fff"
+              [fullScreen]="false"
+              type="ball-rotate"
+            >
+            </ngx-spinner>
+          </div>
+        </ng-container>
+        <ng-template #NOT_LOADING>
+          <div *ngIf="response.results.length>0; else NO_RESULTS"
+               class="row align-content-between justify-content-center">
+            <!--  RESULTS  -->
+            <div class="col-12">
+              <div class="container-fluid px-0">
+                <div class="row">
+                  <div *ngFor="let song of response.results" class="col-4 mt-4">
+                    <app-song [song]="song"></app-song>
+                  </div>
                 </div>
               </div>
             </div>
+
+            <!--  PAGINATION  -->
+            <app-pagination [totalPages]="response.totalPages" [currentPage]="query.page"
+                            (changePage)="onChangePage($event)"></app-pagination>
           </div>
+          <ng-template #NO_RESULTS>
+            <div class="row align-items-center justify-content-center flex-grow-1">
+              <div class="col-12">
+                <p class="text-center no-results">No results were found...</p>
+              </div>
+            </div>
+          </ng-template>
 
-          <!--  PAGINATION  -->
-          <app-pagination [totalPages]="response.totalPages" [currentPage]="query.page" (changePage)="onChangePage($event)"></app-pagination>
-        </div>
+        </ng-template>
+
       </div>
-
     </div>
+
   </div>
+
 </div>
 

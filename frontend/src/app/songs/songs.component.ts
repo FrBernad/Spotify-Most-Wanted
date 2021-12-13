@@ -5,6 +5,7 @@ import {SongPaginationQuery, SongsService} from "./songs.service";
 import {PaginationUtils} from "../utils/pagination-utils";
 import {Subscription} from "rxjs";
 import {ActivatedRoute, Router} from "@angular/router";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
   selector: 'app-songs',
@@ -34,10 +35,13 @@ export class SongsComponent implements OnInit, OnDestroy {
     private songsService: SongsService,
     private route: ActivatedRoute,
     private router: Router,
+    private spinner: NgxSpinnerService
   ) {
   }
 
   ngOnInit(): void {
+
+    this.spinner.show();
 
     this.route.queryParams.subscribe((e) => {
       this.parseQueryParams();
@@ -50,7 +54,7 @@ export class SongsComponent implements OnInit, OnDestroy {
           ...this.response,
           ...results
         };
-        this.loading = false;
+        this.spinner.hide().then(() => this.loading = false);
       });
   }
 

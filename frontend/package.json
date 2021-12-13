@@ -24,6 +24,7 @@
     "@popperjs/core": "^2.9.2",
     "bootstrap": "^5.1.3",
     "ng-particles": "^2.20.5",
+    "ngx-spinner": "^13.0.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",
     "tsparticles": "^1.37.5",

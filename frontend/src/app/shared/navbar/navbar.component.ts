@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
+import * as url from "url";
 
 @Component({
   selector: 'app-navbar',
@@ -17,7 +18,7 @@ export class NavbarComponent implements OnInit {
   }
 
   isCurrentRoute(route: String): Boolean {
-    return this.router.url === route;
+    return this.router.url.split('?')[0]  === route;
   }
 
 }

@@ -6,6 +6,7 @@ import {RouterModule} from "@angular/router";
 import {ReactiveFormsModule} from "@angular/forms";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {PaginationComponent} from "./pagination/pagination.component";
+import {NgxSpinnerModule} from "ngx-spinner";
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import {PaginationComponent} from "./pagination/pagination.component";
     FontAwesomeModule,
     ReactiveFormsModule,
     RouterModule,
+    NgxSpinnerModule,
     CommonModule
   ],
   exports: [
@@ -25,6 +27,7 @@ import {PaginationComponent} from "./pagination/pagination.component";
     NavbarComponent,
     FooterComponent,
     PaginationComponent,
+    NgxSpinnerModule,
     RouterModule
   ]
 })
