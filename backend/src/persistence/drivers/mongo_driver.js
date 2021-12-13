@@ -1,4 +1,4 @@
-const { MongoClient } = require("mongodb");
+const {MongoClient} = require("mongodb");
 const debug = require('debug')('backend:server');
 
 class MongoDriver {
@@ -36,14 +36,14 @@ class MongoDriver {
     }
 
     async executeFindQuery(query, options) {
-        debug("Executing find query with:\nquery:\n\t" + query + "\noptions:\n\t"+options)
+        debug("Executing find query with:\nquery:\n\t" + query + "\noptions:\n\t" + options)
 
         const results = this._db.collection(MongoDriver._COLLECTION).find(query, options);
         return await results.toArray()
     }
 
     async executeAggregationQuery(pipeline) {
-        debug("Executing aggregation query with pipeline:\n\t" + JSON.stringify(pipeline))
+        debug("Executing aggregation query with pipeline:\n\t" + JSON.stringify(pipeline));
 
         const results = this._db.collection(MongoDriver._COLLECTION).aggregate(pipeline);
         return await results.toArray()
@@ -52,9 +52,9 @@ class MongoDriver {
     async closeConnection() {
         try {
             await this._client.close();
-            debug("Closed Mongo database connection")
+            debug("Closed Mongo database connection");
         } catch (e) {
-            debug("Error closing Mongo database connection")
+            debug("Error closing Mongo database connection");
         }
     }
 }

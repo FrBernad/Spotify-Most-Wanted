@@ -25,13 +25,17 @@ class SearchService {
 
         if (isNaN(page) || isNaN(itemsPerPage) || page < 0 || itemsPerPage < 0) {
             debug(`Invalid params artist:${!artist ? "any" : artist} country:${!country ? "any" : country} genre:${!genre ? "any" : genre} (page:${page}, itemsPerPage:${itemsPerPage})`);
-            return null;
+            throw new Error("204");
         }
 
         debug(`Searching most popular songs artist:${!artist ? "any" : artist} country:${!country ? "any" : country} genre:${!genre ? "any" : genre} (page:${page}, itemsPerPage:${itemsPerPage})`);
-        const totalItems = await this._songsDao.getMostPopularSongsCount(artist, country, genre);
 
+        const totalItems = await this._songsDao.getMostPopularSongsCount(artist, country, genre);
         const results = await this._songsDao.getMostPopularSongs(artist, country, genre, page, itemsPerPage);
+
+        if (!results) {
+            throw new Error("500");
+        }
 
         return new PaginatedResult(page, itemsPerPage, totalItems, results);
     }

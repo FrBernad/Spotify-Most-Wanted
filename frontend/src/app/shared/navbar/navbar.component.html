@@ -21,11 +21,15 @@
           </li>
           <li class="nav-item mx-1">
             <a class="nav-link navbar-text" [ngClass]="{'active':isCurrentRoute('/songs')}"
-               [routerLink]="['/songs']" >Songs</a>
+               [routerLink]="['/songs']">Songs</a>
           </li>
           <li class="nav-item mx-1">
             <a class="nav-link navbar-text" [ngClass]="{'active':isCurrentRoute('/artists')}"
                [routerLink]="['/artists']">Artists</a>
+          </li>
+          <li class="nav-item mx-1">
+            <a class="nav-link navbar-text" [ngClass]="{'active':isCurrentRoute('/albums')}"
+               [routerLink]="['/albums']">Albums</a>
           </li>
         </ul>
       </div>

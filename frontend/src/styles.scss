@@ -16,11 +16,6 @@
 
 * {
   font-family: 'ReadexPro', sans-serif;
-  --primary-color: #003359;
-  --secondary-color: #6699CC;
-  --tertiary-color: #EBEDF3;
-  --quaternary-color: #BDBDBD;
-  --quinary-color: #676767;
 }
 
 .txt-primary {
@@ -52,4 +47,9 @@ p {
 #particlesContainer {
   width: 100%;
   height: 100%;
+}
+
+input:focus {
+  border-color: var(--secondary) !important;
+  box-shadow: 0 0 0 0.15rem rgba(247, 116, 60, 0.25) !important;
 }

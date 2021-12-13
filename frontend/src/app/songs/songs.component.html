@@ -1,0 +1,71 @@
+<div class="container-lg mt-4">
+  <div class="row">
+
+    <!--  SEARCH -->
+    <div class="col-12">
+      <div class="container-fluid px-0 w-100">
+        <div class="row">
+          <div class="col-12">
+            <div class="container-fluid px-0">
+              <div class="row align-items-center justify-content-between">
+
+                <div class="col-3 d-flex align-items-center">
+                  <input type="text" class="form-control w-100" id="Artist" placeholder="artist name">
+                </div>
+
+                <div class="col-3 d-flex align-items-center">
+                  <input type="text" class="form-control w-100" id="Genre" placeholder="genre name">
+                </div>
+
+                <div class="col-3 d-flex align-items-center">
+                  <div class="dropdown w-100">
+                    <button
+                      class="btn w-100 btn-secondary dropdown-toggle d-flex align-items-center justify-content-between"
+                      type="button" id="dropdownMenuButton1"
+                      data-bs-toggle="dropdown" aria-expanded="false">
+                      <span> Country</span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                      <li><a class="dropdown-item" href="#">Action</a></li>
+                      <li><a class="dropdown-item" href="#">Another action</a></li>
+                      <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="col-3 d-flex align-items-center">
+                  <button class="btn btn-primary w-100" type="submit">Search</button>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--  RESULTS SECTION -->
+    <div class="col-12 my-4">
+      <div class="container-fluid px-0">
+        <div class="row align-content-between justify-content-center">
+          <!--  RESULTS  -->
+          <div class="col-12">
+            <div class="container-fluid px-0">
+              <div class="row">
+                <div *ngFor="let song of response.results" class="col-4 mt-4">
+                  <app-song [song]="song"></app-song>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--  PAGINATION  -->
+          <app-pagination [totalPages]="response.totalPages" [currentPage]="query.page" (changePage)="onChangePage($event)"></app-pagination>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+

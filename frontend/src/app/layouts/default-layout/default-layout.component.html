@@ -6,11 +6,15 @@
       </div>
     </ng-container>
     <ng-template #NOT_HOME>
-      <div class="col-12 px-0 flex-grow-0">
-        <app-navbar></app-navbar>
-      </div>
-      <div class="col-12 px-0 flex-grow-1 d-flex justify-content-center align-items-center">
-        <router-outlet></router-outlet>
+      <div class="col-12 px-0 flex-grow-1 d-flex">
+        <div class="container-fluid px-0 d-flex flex-column">
+          <div class="col-12 flex-grow-0">
+            <app-navbar></app-navbar>
+          </div>
+          <div class="col-12 flex-grow-1 d-flex">
+            <router-outlet></router-outlet>
+          </div>
+        </div>
       </div>
     </ng-template>
     <div class="col-12 px-0 align-self-end flex-grow-0">

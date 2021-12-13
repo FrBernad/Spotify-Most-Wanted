@@ -5,11 +5,13 @@ import {FooterComponent} from "./footer/footer.component";
 import {RouterModule} from "@angular/router";
 import {ReactiveFormsModule} from "@angular/forms";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
+import {PaginationComponent} from "./pagination/pagination.component";
 
 @NgModule({
   declarations: [
     NavbarComponent,
-    FooterComponent
+    FooterComponent,
+    PaginationComponent
   ],
   imports: [
     FontAwesomeModule,
@@ -22,6 +24,8 @@ import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
     FontAwesomeModule,
     NavbarComponent,
     FooterComponent,
+    PaginationComponent,
+    RouterModule
   ]
 })
 export class SharedModule {

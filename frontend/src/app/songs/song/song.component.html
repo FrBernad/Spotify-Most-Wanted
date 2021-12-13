@@ -1,0 +1,22 @@
+<div class="container-fluid song-container">
+  <div class="row">
+    <div class="col-12">
+      <h1>{{song.title}}</h1>
+    </div>
+    <div class="col-12">
+      <p>
+        <span>{{song.artist}}</span>
+        <span *ngFor="let coa of song.co_artists">{{coa}}</span>
+      </p>
+    </div>
+    <div class="col-12">
+      <p>
+        {{song.genre}}
+      </p>
+    </div>
+    <div class="col-12">
+      <p>
+      </p>
+    </div>
+  </div>
+</div>

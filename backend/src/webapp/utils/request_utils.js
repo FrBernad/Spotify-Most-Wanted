@@ -2,7 +2,7 @@ function getOrDefault(value, def) {
     return value !== undefined ? value : def;
 }
 
-function addPaginationHeaders(res, baseUri, searchParams, results){
+function addPaginationHeaders(res, baseUri, searchParams, results) {
     const page = results.page;
     const itemsPerPage = results.itemsPerPage;
 
@@ -23,14 +23,14 @@ function addPaginationHeaders(res, baseUri, searchParams, results){
     lastLink.append("itemsPerPage", itemsPerPage);
     links.last = `${baseUri}?${lastLink}`;
 
-    if (page != first) {
+    if (page !== first) {
         const prevLink = new URLSearchParams(searchParams);
         prevLink.append("page", prev)
         prevLink.append("itemsPerPage", itemsPerPage);
         links.prev = `${baseUri}?${prevLink}`;
     }
 
-    if (page != last) {
+    if (page !== last) {
         const nextLink = new URLSearchParams(searchParams);
         nextLink.append("page", next)
         nextLink.append("itemsPerPage", itemsPerPage);
@@ -40,7 +40,12 @@ function addPaginationHeaders(res, baseUri, searchParams, results){
     res.links(links);
 }
 
-function createPaginationResponse(req, res, searchParams, results){
+function createPaginationResponse(req, res, searchParams, results) {
+
+    if (results.results === null) {
+        res.status(500).end();
+        return;
+    }
 
     if (results.results.length === 0) {
         res.status(204).end();
@@ -54,8 +59,8 @@ function createPaginationResponse(req, res, searchParams, results){
     res.send(results.results);
 }
 
-function getRequestUri(req){
+function getRequestUri(req) {
     return `${req.protocol}://${req.headers.host}${req.baseUrl}${req.path}`;
 }
 
-module.exports = { getOrDefault, addPaginationHeaders, getRequestUri, createPaginationResponse };
+module.exports = {getOrDefault, addPaginationHeaders, getRequestUri, createPaginationResponse};
