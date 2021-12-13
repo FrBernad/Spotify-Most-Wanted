@@ -26,16 +26,17 @@ class ArtistDao {
                 {
                     $project: {
                         _id: 0,
-                        key: {$setUnion: [["$artist"], "$co_artists"]},
-                        value: {title: "$title", popularity: "$popularity", uri: "$uri"}
+                        artists: {$setUnion: [["$artist"], "$co_artists"]},
+                        song: {title: "$title", popularity: "$popularity", uri: "$uri",album:"$album"}
                     }
                 };
-            const unwind = {$unwind: "$key"};
-            const group = {$group: {"_id": "$key", "songs": {"$push": "$value"}}};
-            const sort = {$sort: {_id: 1}};
+            const unwind = {$unwind: "$artists"};
+            const group = {$group: {"_id": "$artists", "songs": {"$addToSet": "$song"}}};
+            const project2 ={$project:{_id:0,artist:"$_id",songs:"$songs"}};
+            const sort = {$sort: {artist:1}};
             const offsetAndLimit = daoUtils.generateOffsetAndLimit(page, itemsPerPage);
 
-            const pipeline = [match, project, unwind, group, sort, ...offsetAndLimit];
+            const pipeline = [match, project, unwind, group,project2, sort, ...offsetAndLimit];
 
             return await this._mongoDriver.executeAggregationQuery(pipeline);
 
@@ -53,11 +54,11 @@ class ArtistDao {
                     $project: {
                         _id: 0,
                         key: {$setUnion: [["$artist"], "$co_artists"]},
-                        value: {title: "$title", popularity: "$popularity", uri: "$uri"}
+                        value: {title: "$title", popularity: "$popularity", uri: "$uri", album:"$album"}
                     }
                 };
             const unwind = {$unwind: "$key"};
-            const group = {$group: {"_id": "$key", "songs": {"$push": "$value"}}};
+            const group = {$group: {"_id": "$key", "songs": {"$addToSet": "$value"}}};
             const count = {$count: "totalItems"};
 
             const pipeline = [match, project, unwind, group, count];

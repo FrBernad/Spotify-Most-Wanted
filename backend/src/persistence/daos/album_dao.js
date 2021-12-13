@@ -20,9 +20,23 @@ class AlbumDao {
     async getMostPopularAlbumsCount(artist, country, genre) {
         try {
             const match = daoUtils.generateMatch(artist, country, genre);
+            const project1 = {
+                $project: {
+                    _id: 0,
+                    album: {albumName: "$album", by: "$artist"},
+                    value: {
+                        title: "$title",
+                        popularity: "$popularity",
+                        uri: "$uri",
+                        artists: {$setUnion: [["$artist"], "$co_artists"]}
+                    }
+                }
+            };
+            const group = {$group: {"_id": "$album", "songs": {"$addToSet": "$value"}}};
+
             const count = {$count: "totalItems"};
 
-            const pipeline = [match, count];
+            const pipeline = [match,project1,group, count];
 
             const result = await this._mongoDriver.executeAggregationQuery(pipeline);
 
@@ -37,10 +51,10 @@ class AlbumDao {
     async getMostPopularAlbums(artist, country, genre, page, itemsPerPage) {
         try {
             const match = daoUtils.generateMatch(artist, country, genre);
-            const project = {
+            const project1 = {
                 $project: {
                     _id: 0,
-                    album: {AlbumName: "$album", By: "$artist"},
+                    album: {albumName: "$album", by: "$artist"},
                     value: {
                         title: "$title",
                         popularity: "$popularity",
@@ -49,11 +63,12 @@ class AlbumDao {
                     }
                 }
             };
-            const group = {$group: {"_id": "$album", "songs": {"$push": "$value"}}};
-            const sort = {$sort: {_id: 1}};
+            const group = {$group: {"_id": "$album", "songs": {"$addToSet": "$value"}}};
+            const project2 ={$project:{_id:0,album:"$_id.albumName",by:"$_id.by",songs:"$songs"}};
+            const sort = {$sort: {album: 1}};
             const offsetAndLimit = daoUtils.generateOffsetAndLimit(page, itemsPerPage);
 
-            const pipeline = [match, project, group, sort, ...offsetAndLimit];
+            const pipeline = [match, project1, group, project2,sort, ...offsetAndLimit];
 
             return await this._mongoDriver.executeAggregationQuery(pipeline);
 
