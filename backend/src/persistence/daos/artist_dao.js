@@ -1,6 +1,7 @@
 const debug = require('debug')('backend:server');
 const daoUtils = require('@persistence/daos/utils/dao_utils');
 
+
 class ArtistDao {
 
     constructor() {
@@ -72,6 +73,64 @@ class ArtistDao {
         }
     }
 
+    async getArtitstCollab(artist, page, itemsPerPage){
+        try{
+            const collabs = await this._neoDriver.executeQuery(`MATCH (a:Artist{name:\'${artist}\'}\) CALL{\
+                WITH a\
+                MATCH (a)-[r1:MAIN_ARTIST]->(s)<-[r2:CO_ARTIST]-(b)\
+                RETURN DISTINCT b\
+                UNION\
+                WITH a\
+                MATCH (a)-[r1:CO_ARTIST]->(s)<-[r2:CO_ARTIST]-(b)\
+                RETURN DISTINCT b\
+                UNION\
+                WITH a\
+                MATCH (a)-[r1:CO_ARTIST]->(s)<-[r2:MAIN_ARTIST]-(b)\
+                RETURN DISTINCT b\
+                }\
+                RETURN b.name SKIP ${page} LIMIT ${itemsPerPage}`);
+            let toReturn = [];
+            collabs.map((record)=>{toReturn.push(record._fields)});
+            return toReturn;
+        } catch (error){
+            debug(error);
+            return null;
+        }
+        
+    }
+
+    async getArtitstCollabCount(artist){
+        try{
+            const count = await this._neoDriver.executeQuery(`MATCH (a:Artist{name:\'${artist}\'}\) CALL{\
+                WITH a\
+                MATCH (a)-[r1:MAIN_ARTIST]->(s)<-[r2:CO_ARTIST]-(b)\
+                RETURN DISTINCT b\
+                UNION\
+                WITH a\
+                MATCH (a)-[r1:CO_ARTIST]->(s)<-[r2:CO_ARTIST]-(b)\
+                RETURN DISTINCT b\
+                UNION\
+                WITH a\
+                MATCH (a)-[r1:CO_ARTIST]->(s)<-[r2:MAIN_ARTIST]-(b)\
+                RETURN DISTINCT b\
+                }\
+                RETURN COUNT(b.name)`);
+
+            // const collabs = await this._neoDriver.executeQuery(`MATCH (n:Artist) RETURN n LIMIT 25`);
+            
+            // var aNumber = count.toInt();
+            // if (this._neoDriver.integer.inSafeRange(count)) {
+            //     aNumber = count.toNumber()
+            //   }else{
+            //       aNumber = count.toString();
+            //   }
+            return count[0]['_fields'].toString();
+        } catch (error){
+            debug(error);
+            return null;
+        }
+        
+    }
 
 }
 

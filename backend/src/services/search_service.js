@@ -63,6 +63,18 @@ class SearchService {
         return new PaginatedResult(page, itemsPerPage, totalItems, results);
     }
 
+    async getArtitstCollab(artist, page, itemsPerPage){
+        page = parseInt(page);
+        itemsPerPage = parseInt(itemsPerPage);
+        if (isNaN(page) || isNaN(itemsPerPage) || page < 0 || itemsPerPage < 0) {
+            debug(`Invalid params artist:${artist}(page:${page}, itemsPerPage:${itemsPerPage})`);
+            return null;
+        }
+        const totalItems = parseInt(await this._artistDao.getArtitstCollabCount(artist));
+        const results = await this._artistDao.getArtitstCollab(artist,page,itemsPerPage);
+        return new PaginatedResult(page,itemsPerPage,totalItems,results);
+
+    }
     async getMostPopularAlbums(artist, country, genre, page, itemsPerPage) {
 
         page = parseInt(page);

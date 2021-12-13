@@ -38,5 +38,26 @@ router.get('/', async function (req, res, next) {
 
 });
 
+  router.get('/getArtistsCollab',async function(req, res, next){
+      const queryParams = req.query;
+
+      const page = getOrDefault(queryParams.page, _DEFAULT_PAGE);
+      const itemsPerPage = getOrDefault(queryParams.itemsPerPage, _DEFAULT_ITEMS_PER_PAGE);
+      const artist = queryParams.artists;
+      const results = await searchService.getArtitstCollab(queryParams.artist,page,itemsPerPage);
+      console.log(results);
+      if(!results){
+          res.sendStatus(400);
+          return;
+      }
+
+      const searchParams = new URLSearchParams();
+
+      if(!!artist){
+          searchParams.append(artist);
+      }
+
+      createPaginationResponse(req, res,searchParams,results);
+  });
 module.exports = router;
 
