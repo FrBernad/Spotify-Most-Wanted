@@ -88,7 +88,7 @@ class ArtistDao {
                 MATCH (a)-[r1:CO_ARTIST]->(s)<-[r2:MAIN_ARTIST]-(b)\
                 RETURN DISTINCT b\
                 }\
-                RETURN b.name SKIP ${page} LIMIT ${itemsPerPage}`);
+                RETURN b.name SKIP ${page * itemsPerPage} LIMIT ${itemsPerPage}`);
             let toReturn = [];
             collabs.map((record)=>{toReturn.push(record._fields)});
             return toReturn;

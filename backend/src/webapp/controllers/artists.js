@@ -43,9 +43,16 @@ router.get('/', async function (req, res, next) {
 
       const page = getOrDefault(queryParams.page, _DEFAULT_PAGE);
       const itemsPerPage = getOrDefault(queryParams.itemsPerPage, _DEFAULT_ITEMS_PER_PAGE);
-      const artist = queryParams.artists;
-      const results = await searchService.getArtitstCollab(queryParams.artist,page,itemsPerPage);
-      console.log(results);
+      const artist = getOrDefault(queryParams.artists, "");
+      let results;
+
+      try{
+        results = await searchService.getArtitstCollab(queryParams.artist,page,itemsPerPage);
+      } catch(e){
+          res.sendStatus(parseInt(e.message));
+          return
+      }
+
       if(!results){
           res.sendStatus(400);
           return;

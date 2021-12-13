@@ -66,9 +66,9 @@ class SearchService {
     async getArtitstCollab(artist, page, itemsPerPage){
         page = parseInt(page);
         itemsPerPage = parseInt(itemsPerPage);
-        if (isNaN(page) || isNaN(itemsPerPage) || page < 0 || itemsPerPage < 0) {
+        if (!(!!artist) || isNaN(page) || isNaN(itemsPerPage) || page < 0 || itemsPerPage < 0) {
             debug(`Invalid params artist:${artist}(page:${page}, itemsPerPage:${itemsPerPage})`);
-            return null;
+            throw new Error("204");
         }
         const totalItems = parseInt(await this._artistDao.getArtitstCollabCount(artist));
         const results = await this._artistDao.getArtitstCollab(artist,page,itemsPerPage);
