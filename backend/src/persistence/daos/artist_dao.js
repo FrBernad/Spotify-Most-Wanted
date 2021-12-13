@@ -36,7 +36,9 @@ class ArtistDao {
 
             let group = {$group: {"_id": "$key", "songs": {"$push": "$value"}}};
 
-            const pipeline = daoUtils.generateResultsPipeline(match, project, unwind, group, null, page, itemsPerPage);
+            let sort = {$sort: {_id:1}};
+
+            const pipeline = daoUtils.generateResultsPipeline(match, project, unwind, group, sort, page, itemsPerPage);
 
             return await this._mongoDriver.executeAggregationQuery(pipeline);
 
