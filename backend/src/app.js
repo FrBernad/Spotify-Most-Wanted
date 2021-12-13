@@ -4,7 +4,6 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 const indexRouter = require('@webapp/controllers/index');
-const usersRouter = require('@webapp/controllers/users');
 const artistsRouter = require('@webapp/controllers/artists');
 const songsRouter = require('@webapp/controllers/songs');
 const countriesRouter = require('@webapp/controllers/countries');
@@ -17,7 +16,6 @@ app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 
 app.use('/api', indexRouter);
-app.use('/api/users', usersRouter);
 app.use('/api/artists', artistsRouter);
 app.use('/api/songs', songsRouter);
 app.use('/api/countries', countriesRouter);

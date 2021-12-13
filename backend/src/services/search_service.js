@@ -15,7 +15,7 @@ class SearchService {
     async _init() {
         this._songsDao = await require("@persistence/daos/song_dao")();
         this._artistDao = await require("@persistence/daos/artist_dao")();
-        this._extraInfoDao = await require("@persistence/daos/extraInfo_dao")();
+        this._countriesDao = await require("@persistence/daos/countries_dao")();
     }
 
     async getMostPopularSongs(artist, country, genre, page, itemsPerPage) {
@@ -42,7 +42,6 @@ class SearchService {
 
     async getMostPopularArtists(country, genre, page, itemsPerPage) {
 
-
         page = parseInt(page);
         itemsPerPage = parseInt(itemsPerPage);
 
@@ -50,6 +49,8 @@ class SearchService {
             debug(`Invalid params country:${!country ? "any" : country} genre:${!genre ? "any" : genre} (page:${page}, itemsPerPage:${itemsPerPage})`);
             throw new Error("204");
         }
+
+        debug(`Searching most popular songs country:${!country ? "any" : country} genre:${!genre ? "any" : genre} (page:${page}, itemsPerPage:${itemsPerPage})`);
 
         const totalItems = await this._artistDao.getMostPopularArtistsCount(country, genre);
         const results = await this._artistDao.getMostPopularArtists(country, genre, page, itemsPerPage);
@@ -62,7 +63,11 @@ class SearchService {
     }
 
     async getAllCountries() {
-        const results = await this._extraInfoDao.getCountries();
+
+        debug(`Searching all countries`);
+
+        const results = await this._countriesDao.getCountries();
+
         if (!results) {
             throw new Error("500");
         }
