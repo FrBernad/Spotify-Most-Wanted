@@ -8,7 +8,7 @@ class DaoUtils {
             pipeline.push(sort);
         }
 
-        if (!!page && !!itemsPerPage) {
+        if (page !== null && itemsPerPage !== null) {
             pipeline.push({$skip: page * itemsPerPage}, {$limit: itemsPerPage})
         }
 
