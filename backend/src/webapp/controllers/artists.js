@@ -1,5 +1,5 @@
 const express = require('express');
-const { getOrDefault, createPaginationResponse } = require("@webapp/utils/request_utils");
+const {getOrDefault, createPaginationResponse} = require("@webapp/utils/request_utils");
 const router = express.Router();
 let searchService;
 require("@services/search_service")().then(service => searchService = service);
@@ -8,7 +8,7 @@ const _DEFAULT_PAGE = "0";
 const _DEFAULT_ITEMS_PER_PAGE = "5";
 
 
-router.get('/', async function(req, res, next) {
+router.get('/', async function (req, res, next) {
     const queryParams = req.query;
 
     const page = getOrDefault(queryParams.page, _DEFAULT_PAGE);
@@ -16,10 +16,12 @@ router.get('/', async function(req, res, next) {
     const country = getOrDefault(queryParams.country, "");
     const genre = getOrDefault(queryParams.genre, "");
 
-    const results = await searchService.getMostPopularArtists(country,genre,page,itemsPerPage);
+    let results;
 
-    if (!results) {
-        res.sendStatus(400);
+    try {
+        results = await searchService.getMostPopularArtists(country, genre, page, itemsPerPage);
+    } catch (e) {
+        res.sendStatus(parseInt(e.message));
         return;
     }
 
@@ -34,7 +36,7 @@ router.get('/', async function(req, res, next) {
 
     createPaginationResponse(req, res, searchParams, results);
 
-  });
+});
 
 module.exports = router;
 

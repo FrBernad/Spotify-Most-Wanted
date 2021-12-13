@@ -36,7 +36,7 @@ class ArtistDao {
 
             let group = {$group: {"_id": "$key", "songs": {"$push": "$value"}}};
 
-            const pipeline = daoUtils.generateResultsPipeline(match,project, unwind,group,null,page, itemsPerPage);
+            const pipeline = daoUtils.generateResultsPipeline(match, project, unwind, group, null, page, itemsPerPage);
 
             return await this._mongoDriver.executeAggregationQuery(pipeline);
 
@@ -63,7 +63,7 @@ class ArtistDao {
 
             let group = {$group: {"_id": "$key", "songs": {"$push": "$value"}}};
 
-            const pipeline = daoUtils.generateCountPipeline(match, project,unwind,group);
+            const pipeline = daoUtils.generateCountPipeline(match, project, unwind, group);
 
             const result = await this._mongoDriver.executeAggregationQuery(pipeline);
             return result[0].totalItems;

@@ -1,28 +1,14 @@
 class DaoUtils {
 
     static generateResultsPipeline(match, project, unwind, group, sort, page, itemsPerPage) {
-        const pipeline = [];
 
-        if (!!match) {
-            pipeline.push(match);
-        }
-
-        if (!!project) {
-            pipeline.push(project);
-        }
-        if (!!unwind) {
-            pipeline.push(unwind);
-        }
-
-        if (!!group) {
-            pipeline.push(group);
-        }
+        const pipeline = this._generateCommonResources(match, project, unwind, group);
 
         if (!!sort) {
             pipeline.push(sort);
         }
 
-        if (!!page && !!itemsPerPage){
+        if (!!page && !!itemsPerPage) {
             pipeline.push({$skip: page * itemsPerPage}, {$limit: itemsPerPage})
         }
 
@@ -30,22 +16,7 @@ class DaoUtils {
     }
 
     static generateCountPipeline(match, project, unwind, group) {
-        const pipeline = [];
-
-        if (!!match) {
-            pipeline.push(match);
-        }
-
-        if (!!project) {
-            pipeline.push(project);
-        }
-        if (!!unwind) {
-            pipeline.push(unwind);
-        }
-
-        if (!!group) {
-            pipeline.push(group);
-        }
+        const pipeline = this._generateCommonResources(match, project, unwind, group);
 
         pipeline.push({$count: "totalItems"})
 
@@ -70,6 +41,27 @@ class DaoUtils {
         return {
             $match: {$and: match}
         }
+    }
+
+    static _generateCommonResources(match, project, unwind, group) {
+        const pipeline = [];
+
+        if (!!match) {
+            pipeline.push(match);
+        }
+
+        if (!!project) {
+            pipeline.push(project);
+        }
+        if (!!unwind) {
+            pipeline.push(unwind);
+        }
+
+        if (!!group) {
+            pipeline.push(group);
+        }
+
+        return pipeline;
     }
 
 }
