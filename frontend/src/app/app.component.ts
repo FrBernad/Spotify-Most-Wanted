@@ -3,7 +3,8 @@ import {FaIconLibrary} from "@fortawesome/angular-fontawesome";
 import {
   faMicrophone as fasMicrophone,
   faMusic as fasMusic,
-  faRecordVinyl as fasRecordVinyl
+  faRecordVinyl as fasRecordVinyl,
+  faPlay as fasPlay
 } from "@fortawesome/free-solid-svg-icons"
 import {Title} from "@angular/platform-browser";
 
@@ -26,7 +27,7 @@ export class AppComponent implements OnInit {
     this.titleService.setTitle(this.title);
 
     this.library.addIcons(
-      fasMusic, fasMicrophone, fasRecordVinyl
+      fasMusic, fasMicrophone, fasRecordVinyl, fasPlay
     );
 
   }

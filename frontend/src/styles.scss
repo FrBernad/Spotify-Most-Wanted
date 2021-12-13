@@ -53,3 +53,8 @@ input:focus {
   border-color: var(--secondary) !important;
   box-shadow: 0 0 0 0.15rem rgba(247, 116, 60, 0.25) !important;
 }
+
+button:focus {
+  border-color: var(--secondary) !important;
+  box-shadow: 0 0 0 0.15rem rgba(247, 116, 60, 0.25) !important;
+}

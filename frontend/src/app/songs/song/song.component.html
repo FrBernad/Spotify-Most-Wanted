@@ -1,16 +1,22 @@
-<div class="container-fluid song-container">
-  <div class="row">
+<div class="container-fluid song-container d-flex" (mouseenter)="this.showBtn=true" (mouseleave)="this.showBtn=false">
+  <div class="row position-relative flex-grow-1">
+    <a [href]="song.uri" class="position-absolute play-href" target="_blank">
+      <button class="play-btn d-flex align-items-center justify-content-center"
+              [ngClass]="{'d-none': !this.showBtn}" type="button">
+        <fa-icon [icon]="['fas','play']" class="play-icon"></fa-icon>
+      </button>
+    </a>
     <div class="col-12">
-      <h1>{{song.title}}</h1>
+      <h1 class="txt-primary">{{song.title}}</h1>
     </div>
     <div class="col-12">
-      <p>
+      <p class="txt-primary">
         <span>{{song.artist}}</span>
         <span *ngFor="let coa of song.co_artists">{{coa}}</span>
       </p>
     </div>
     <div class="col-12">
-      <p>
+      <p class="txt-primary">
         {{song.genre}}
       </p>
     </div>

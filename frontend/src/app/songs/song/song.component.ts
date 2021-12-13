@@ -10,6 +10,8 @@ export class SongComponent implements OnInit {
 
   @Input("song") song: Song;
 
+  showBtn = false;
+
   constructor() {
   }
 

@@ -3,7 +3,7 @@ import {CommonModule} from "@angular/common";
 import {NavbarComponent} from "./navbar/navbar.component";
 import {FooterComponent} from "./footer/footer.component";
 import {RouterModule} from "@angular/router";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {PaginationComponent} from "./pagination/pagination.component";
 import {NgxSpinnerModule} from "ngx-spinner";
@@ -19,7 +19,8 @@ import {NgxSpinnerModule} from "ngx-spinner";
     ReactiveFormsModule,
     RouterModule,
     NgxSpinnerModule,
-    CommonModule
+    CommonModule,
+    FormsModule
   ],
   exports: [
     CommonModule,
@@ -28,7 +29,8 @@ import {NgxSpinnerModule} from "ngx-spinner";
     FooterComponent,
     PaginationComponent,
     NgxSpinnerModule,
-    RouterModule
+    RouterModule,
+    FormsModule
   ]
 })
 export class SharedModule {

@@ -1,6 +1,41 @@
 .song-container {
-  background-color: var(--primary);
+  background: rgba(255, 255, 255, .1);
   height: 225px;
   border-radius: 8px;
   padding: 1.25rem;
+  transition: background-color .3s ease;
+}
+
+.song-container:hover {
+  background: rgba(255, 255, 255, .2);
+}
+
+.play-href {
+  position: absolute;
+  height: 45px;
+  width: 45px;
+  top: 0;
+  bottom: 0;
+  right: 20px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.play-btn {
+  border-radius: 50%;
+  border: none;
+  height: 45px;
+  width: 45px;
+  background-color: rgb(29, 185, 84);
+  box-shadow: 0 2px 5px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 10%);
+  transition: transform .2s ease;
+}
+
+.play-btn:hover {
+  transform: scale(1.1);
+}
+
+.play-icon {
+  padding: 5px;
+  color: var(--primary);
 }
