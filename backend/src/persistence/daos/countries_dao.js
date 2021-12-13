@@ -22,9 +22,10 @@ class CountriesDao {
             const project = {$project: {_id: 0, countries: 1}};
             const unwind = {$unwind: "$countries"};
             const group = {$group: {"_id": "$countries"}};
-            const sort = {$sort: {_id: 1}};
+            const project2 = {$project:{_id:0,name:"$_id"}};
+            const sort = {$sort: {name: 1}};
 
-            const pipeline = [project, unwind, group, sort];
+            const pipeline = [project, unwind, group,project2,sort];
 
             return await this._mongoDriver.executeAggregationQuery(pipeline);
 
