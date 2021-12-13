@@ -7,6 +7,7 @@ const indexRouter = require('@webapp/controllers/index');
 const artistsRouter = require('@webapp/controllers/artists');
 const songsRouter = require('@webapp/controllers/songs');
 const countriesRouter = require('@webapp/controllers/countries');
+const albumsRouter = require('@webapp/controllers/albums');
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use('/api', indexRouter);
 app.use('/api/artists', artistsRouter);
 app.use('/api/songs', songsRouter);
 app.use('/api/countries', countriesRouter);
+app.use('/api/albums',albumsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
