@@ -78,19 +78,21 @@ class ArtistDao {
             const collabs = await this._neoDriver.executeQuery(`MATCH (a:Artist{name:\'${artist}\'}\) CALL{\
                 WITH a\
                 MATCH (a)-[r1:MAIN_ARTIST]->(s)<-[r2:CO_ARTIST]-(b)\
-                RETURN DISTINCT b\
+                RETURN DISTINCT b, s\
                 UNION\
                 WITH a\
                 MATCH (a)-[r1:CO_ARTIST]->(s)<-[r2:CO_ARTIST]-(b)\
-                RETURN DISTINCT b\
+                RETURN DISTINCT b, s\
                 UNION\
                 WITH a\
                 MATCH (a)-[r1:CO_ARTIST]->(s)<-[r2:MAIN_ARTIST]-(b)\
-                RETURN DISTINCT b\
+                RETURN DISTINCT b, s\
                 }\
-                RETURN b.name ORDER BY b.name SKIP ${page * itemsPerPage} LIMIT ${itemsPerPage}`);
+                RETURN b.name, s.url ORDER BY b.name SKIP ${page * itemsPerPage} LIMIT ${itemsPerPage}`);
             let toReturn = [];
-            collabs.map((record)=>{toReturn.push(record._fields)});
+            collabs.map((record)=>{
+                toReturn.push(record._fields);
+            });
             return toReturn;
         } catch (error){
             debug(error);
