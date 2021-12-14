@@ -54,11 +54,12 @@ class AlbumDao {
                     uri: "$uri",
                     artists: {$setUnion: [["$artist"], "$co_artists"]}
                 }
-            };
-            const group = {$group: {"_id": "$album", "songs": {"$addToSet": "$songs"}}};
-            const project2 = {$project: {_id: 0, title: "$_id.title", author: "$_id.author", songs: "$songs"}};
-            const sort = {$sort: {popularity: 1}};
-            const offsetAndLimit = daoUtils.generateOffsetAndLimit(page, itemsPerPage);
+            }
+        };
+        const group = {$group: {"_id": "$album", "songs": {"$addToSet": "$songs"}}};
+        const project2 = {$project: {_id: 0, title: "$_id.title", author: "$_id.author", songs: "$songs"}};
+        const sort = {$sort: {popularity: 1}};
+        const offsetAndLimit = daoUtils.generateOffsetAndLimit(page, itemsPerPage);
 
         const pipeline = [match, project1, group, project2, sort, ...offsetAndLimit];
 

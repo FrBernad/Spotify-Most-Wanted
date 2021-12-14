@@ -73,7 +73,6 @@ class ArtistDao {
         }
     }
 
-                MATCH (a)-[r1:CO_ARTIST]->(s)<-[r2:CO_ARTIST]-(b)\
     async getArtistRelations(artist, itemsPerPage) {
         const relations = await this._neoDriver.executeQuery(
             `
