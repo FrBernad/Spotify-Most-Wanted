@@ -1,5 +1,6 @@
 const debug = require('debug')('backend:server');
 const daoUtils = require('@persistence/daos/utils/dao_utils');
+const {getOrDefault} = require("@webapp/utils/request_utils");
 
 class AlbumDao {
 
@@ -39,7 +40,7 @@ class AlbumDao {
 
         const result = await this._mongoDriver.executeAggregationQuery(pipeline);
 
-        return result[0].totalItems;
+        return result.length > 0 ? result[0].totalItems : 0;
     }
 
     async getMostPopularAlbums(artist, country, genre, page, itemsPerPage) {

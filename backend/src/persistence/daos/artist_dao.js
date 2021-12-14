@@ -1,5 +1,6 @@
 const debug = require('debug')('backend:server');
 const daoUtils = require('@persistence/daos/utils/dao_utils');
+const {getOrDefault} = require("@webapp/utils/request_utils");
 
 
 class ArtistDao {
@@ -20,57 +21,46 @@ class ArtistDao {
 
     async getMostPopularArtists(country, genre, page, itemsPerPage) {
 
-        try {
 
-            const match = daoUtils.generateMatch(null, country, genre);
-            const project =
-                {
-                    $project: {
-                        _id: 0,
-                        artists: {$setUnion: [["$artist"], "$co_artists"]},
-                        song: {title: "$title", popularity: "$popularity", uri: "$uri", album: "$album"}
-                    }
-                };
-            const unwind = {$unwind: "$artists"};
-            const group = {$group: {"_id": "$artists", "songs": {"$addToSet": "$song"}}};
-            const project2 = {$project: {_id: 0, name: "$_id", songs: "$songs"}};
-            const sort = {$sort: {popularity: 1}};
-            const offsetAndLimit = daoUtils.generateOffsetAndLimit(page, itemsPerPage);
+        const match = daoUtils.generateMatch(null, country, genre);
+        const project =
+            {
+                $project: {
+                    _id: 0,
+                    artists: {$setUnion: [["$artist"], "$co_artists"]},
+                    song: {title: "$title", popularity: "$popularity", uri: "$uri", album: "$album"}
+                }
+            };
+        const unwind = {$unwind: "$artists"};
+        const group = {$group: {"_id": "$artists", "songs": {"$addToSet": "$song"}}};
+        const project2 = {$project: {_id: 0, name: "$_id", songs: "$songs"}};
+        const sort = {$sort: {popularity: 1}};
+        const offsetAndLimit = daoUtils.generateOffsetAndLimit(page, itemsPerPage);
 
-            const pipeline = [match, project, unwind, group, project2, sort, ...offsetAndLimit];
+        const pipeline = [match, project, unwind, group, project2, sort, ...offsetAndLimit];
 
-            return await this._mongoDriver.executeAggregationQuery(pipeline);
-
-        } catch (error) {
-            debug(error);
-            return null;
-        }
+        return await this._mongoDriver.executeAggregationQuery(pipeline);
     }
 
     async getMostPopularArtistsCount(country, genre) {
-        try {
-            const match = daoUtils.generateMatch(null, country, genre);
-            const project =
-                {
-                    $project: {
-                        _id: 0,
-                        key: {$setUnion: [["$artist"], "$co_artists"]},
-                        value: {title: "$title", popularity: "$popularity", uri: "$uri", album: "$album"}
-                    }
-                };
-            const unwind = {$unwind: "$key"};
-            const group = {$group: {"_id": "$key", "songs": {"$addToSet": "$value"}}};
-            const count = {$count: "totalItems"};
+        const match = daoUtils.generateMatch(null, country, genre);
+        const project =
+            {
+                $project: {
+                    _id: 0,
+                    key: {$setUnion: [["$artist"], "$co_artists"]},
+                    value: {title: "$title", popularity: "$popularity", uri: "$uri", album: "$album"}
+                }
+            };
+        const unwind = {$unwind: "$key"};
+        const group = {$group: {"_id": "$key", "songs": {"$addToSet": "$value"}}};
+        const count = {$count: "totalItems"};
 
-            const pipeline = [match, project, unwind, group, count];
+        const pipeline = [match, project, unwind, group, count];
 
-            const result = await this._mongoDriver.executeAggregationQuery(pipeline);
-            return result[0].totalItems;
+        const result = await this._mongoDriver.executeAggregationQuery(pipeline);
 
-        } catch (error) {
-            debug(error);
-            return null;
-        }
+        return result.length > 0 ? result[0].totalItems : 0;
     }
 
     async getArtistRelations(artist, itemsPerPage) {

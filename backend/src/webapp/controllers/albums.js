@@ -22,6 +22,7 @@ router.get('/', async function (req, res, next) {
     try {
         results = await searchService.getMostPopularAlbums(artist,country, genre, page, itemsPerPage);
     } catch (e) {
+        console.log(e)
         res.sendStatus(parseInt(e.message));
         return;
     }
