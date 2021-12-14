@@ -130,9 +130,6 @@ export class RelationsComponent implements OnInit, OnDestroy {
                     </p>
                     <p>
                         <span style='font-weight:bold'>Genre: </span>${this.getData("genre").replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())))}
-                    </p>
-                    <p>
-                        <span style='font-weight:bold'>URL: </span>${this.getData("url").replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())))}
                     </p>`;
           }
           return `
@@ -197,7 +194,7 @@ export class RelationsComponent implements OnInit, OnDestroy {
         return {
           from: rel.start.id,
           to: rel.end.id,
-          label: rel.label
+          label: rel.label === "CO_ARTIST" ? "Co-Artist" : "Main Artist"
         }
       }
     )
@@ -235,6 +232,8 @@ export class RelationsComponent implements OnInit, OnDestroy {
 
     if (!params["artist"]) {
       delete this.query.artist;
+    } else {
+      this.selectedArtist = this.query.artist;
     }
 
   }

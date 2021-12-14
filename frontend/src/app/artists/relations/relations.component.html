@@ -39,6 +39,11 @@
 
         <div [ngClass]="{'d-none':isLoading || !query.artist || response.nodes.length===0}"
              class="row align-content-between justify-content-center flex-grow-1">
+          <div class="col-12 mt-4 flex-grow-1">
+            <p class="search-result">Related songs and artists for
+              <span class="current-artist fw-bold">'{{this.query.artist}}'</span>
+            </p>
+          </div>
           <!--  RELATIONS  -->
           <div class="col-12 my-4 flex-grow-1">
             <div class="container-fluid px-0 h-100" id="graphContainer"></div>
