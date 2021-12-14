@@ -14,13 +14,13 @@ class DaoUtils {
         const match = [];
 
         if (!!artist) {
-            match.push({$or: [{artist: artist}, {co_artists: artist}]})
+            match.push({$or: [{artist: artist.toLowerCase()}, {co_artists: artist.toLowerCase()}]})
         }
         if (!!country) {
-            match.push({countries: country})
+            match.push({countries: country.toLowerCase()})
         }
         if (!!genre) {
-            match.push({genre: genre})
+            match.push({genre: genre.toLowerCase()})
         }
 
         if (!match.length) {
