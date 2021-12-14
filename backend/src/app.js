@@ -28,7 +28,7 @@ const swaggerOptions = {
             }
         ]
     },
-    apis: ['./src/webapp/controllers/artists.js']
+    apis: ['./src/swaggerDefinitions.js']
 };
 
 const specs = swaggerJsDoc(swaggerOptions);
