@@ -3,7 +3,7 @@ from datetime import datetime
 
 class Song:
     def __init__(self, title, uri, popularity, artist, co_artists, genre, artist_followers, release_date, tempo, album):
-        self.popularity = int(popularity.replace('.', ''))
+        self.popularity = popularity
         self.artist = artist
         self.co_artists = co_artists
         self.genre = genre

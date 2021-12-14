@@ -14,7 +14,7 @@ try:
         title = row["Title"]
         country = row["Country"]
         uri = row["Uri"]
-        popularity = row["Popularity"]
+        popularity = len(row["Popularity"])
         artists = row["Artist"].split(" - ")
         artist = artists[0]
         co_artists = []
@@ -29,7 +29,7 @@ try:
         song = songs.get(title)
         if song:
             song.add_country(country)
-            song.popularity += int(popularity.replace('.', ''))
+            song.popularity += popularity
         else:
             songs[title] = Song(title, uri, popularity, artist,
                                 co_artists, genre, artist_followers,

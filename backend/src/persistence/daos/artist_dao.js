@@ -34,7 +34,7 @@ class ArtistDao {
             const unwind = {$unwind: "$artists"};
             const group = {$group: {"_id": "$artists", "songs": {"$addToSet": "$song"}}};
             const project2 = {$project: {_id: 0, name: "$_id", songs: "$songs"}};
-            const sort = {$sort: {name: 1}};
+            const sort = {$sort: {popularity: 1}};
             const offsetAndLimit = daoUtils.generateOffsetAndLimit(page, itemsPerPage);
 
             const pipeline = [match, project, unwind, group, project2, sort, ...offsetAndLimit];
