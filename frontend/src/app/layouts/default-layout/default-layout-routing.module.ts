@@ -24,7 +24,6 @@ const routes: Routes = [
       },
       {
         path: 'artists',
-        component: ArtistsComponent,
         loadChildren: () => import("../../artists/artists.module").then(m => m.ArtistsModule)
       },
       {

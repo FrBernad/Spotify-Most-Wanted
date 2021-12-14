@@ -17,22 +17,15 @@ class CountriesDao {
     }
 
     async getCountries() {
+        const project = {$project: {_id: 0, countries: 1}};
+        const unwind = {$unwind: "$countries"};
+        const group = {$group: {"_id": "$countries"}};
+        const project2 = {$project: {_id: 0, name: "$_id"}};
+        const sort = {$sort: {name: 1}};
 
-        try {
-            const project = {$project: {_id: 0, countries: 1}};
-            const unwind = {$unwind: "$countries"};
-            const group = {$group: {"_id": "$countries"}};
-            const project2 = {$project:{_id:0,name:"$_id"}};
-            const sort = {$sort: {name: 1}};
+        const pipeline = [project, unwind, group, project2, sort];
 
-            const pipeline = [project, unwind, group,project2,sort];
-
-            return await this._mongoDriver.executeAggregationQuery(pipeline);
-
-        } catch (error) {
-            debug(error);
-            return null;
-        }
+        return await this._mongoDriver.executeAggregationQuery(pipeline);
     }
 
 

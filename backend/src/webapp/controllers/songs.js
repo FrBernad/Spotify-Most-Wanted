@@ -51,8 +51,7 @@ router.get('/genres', async function (req, res, next) {
         return;
     }
 
-        res.send(results);
-
+    res.send(results);
 });
 
 

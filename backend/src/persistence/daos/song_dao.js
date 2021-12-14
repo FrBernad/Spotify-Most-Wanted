@@ -18,55 +18,33 @@ class SongsDao {
     }
 
     async getMostPopularSongsCount(artist, country, genre) {
-        try {
-            const match = daoUtils.generateMatch(artist, country, genre);
-            const count = {$count: "totalItems"}
+        const match = daoUtils.generateMatch(artist, country, genre);
+        const count = {$count: "totalItems"}
 
-            const pipeline = [match, count];
+        const pipeline = [match, count];
 
-            const result = await this._mongoDriver.executeAggregationQuery(pipeline);
+        const result = await this._mongoDriver.executeAggregationQuery(pipeline);
 
-            return result[0].totalItems;
-
-        } catch (error) {
-            debug(error);
-            return null;
-        }
+        return result[0].totalItems;
     }
 
     async getMostPopularSongs(artist, country, genre, page, itemsPerPage) {
-        try {
+        const match = daoUtils.generateMatch(artist, country, genre);
+        const offsetAndLimit = daoUtils.generateOffsetAndLimit(page, itemsPerPage);
 
-            const match = daoUtils.generateMatch(artist, country, genre);
-            const offsetAndLimit = daoUtils.generateOffsetAndLimit(page, itemsPerPage);
+        const pipeline = [match, ...offsetAndLimit];
 
-            const pipeline = [match, ...offsetAndLimit];
-
-            return await this._mongoDriver.executeAggregationQuery(pipeline);
-
-        } catch (error) {
-            debug(error);
-            return null;
-        }
+        return await this._mongoDriver.executeAggregationQuery(pipeline);
     }
 
-    async getGenres(){
+    async getGenres() {
+        const group = {$group: {"_id": "$genre", count: {"$sum": 1}}};
+        const project = {$project: {_id: 0, genre: "$_id", amount: "$count"}};
+        const sort = {$sort: {genre: 1}};
 
-        try {
+        const pipeline = [group, project, sort];
 
-            const group = {$group:{"_id":"$genre",count:{"$sum":1}}};
-            const project = {$project:{_id:0,genre:"$_id",amount:"$count"}};
-            const sort =  {$sort:{genre:1}};
-
-            const pipeline = [group,project,sort];
-
-            return await this._mongoDriver.executeAggregationQuery(pipeline);
-
-        } catch (error) {
-            debug(error);
-            return null;
-        }
-
+        return await this._mongoDriver.executeAggregationQuery(pipeline);
     }
 
 }

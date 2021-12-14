@@ -73,65 +73,38 @@ class ArtistDao {
         }
     }
 
-    async getArtitstCollab(artist, page, itemsPerPage){
-        try{
-            const collabs = await this._neoDriver.executeQuery(`MATCH (a:Artist{name:\'${artist}\'}\) CALL{\
-                WITH a\
-                MATCH (a)-[r1:MAIN_ARTIST]->(s)<-[r2:CO_ARTIST]-(b)\
-                RETURN DISTINCT b, s\
-                UNION\
-                WITH a\
                 MATCH (a)-[r1:CO_ARTIST]->(s)<-[r2:CO_ARTIST]-(b)\
-                RETURN DISTINCT b, s\
-                UNION\
-                WITH a\
-                MATCH (a)-[r1:CO_ARTIST]->(s)<-[r2:MAIN_ARTIST]-(b)\
-                RETURN DISTINCT b, s\
-                }\
-                RETURN b.name, s.url ORDER BY b.name SKIP ${page * itemsPerPage} LIMIT ${itemsPerPage}`);
-            let toReturn = [];
-            collabs.map((record)=>{
-                toReturn.push(record._fields);
-            });
-            return toReturn;
-        } catch (error){
-            debug(error);
-            return null;
-        }
+    async getArtistRelations(artist, itemsPerPage) {
+        const relations = await this._neoDriver.executeQuery(
+            `
+                CALL {
+                    MATCH (a:Artist{name:\'${artist}\'\})-[r1]->(s)<-[r2]-(b:Artist)
+                    RETURN  a,b,s,r1,r2 LIMIT ${itemsPerPage}
+                }
+                WITH apoc.coll.toSet(collect(s)+collect(a)+collect(b)) as nodes, 
+                apoc.coll.toSet(collect(r1)+collect(r2)) as relationships
+                CALL apoc.export.json.data(nodes,relationships,null,{useTypes:true, stream: true, jsonFormat:'JSON'})
+                YIELD data
+                RETURN data`)
 
+        return JSON.parse(relations[0]._fields[0] + '}');
     }
 
-    async getArtitstCollabCount(artist){
-        try{
-            const count = await this._neoDriver.executeQuery(`MATCH (a:Artist{name:\'${artist}\'}\) CALL{\
-                WITH a\
-                MATCH (a)-[r1:MAIN_ARTIST]->(s)<-[r2:CO_ARTIST]-(b)\
-                RETURN DISTINCT b\
-                UNION\
-                WITH a\
-                MATCH (a)-[r1:CO_ARTIST]->(s)<-[r2:CO_ARTIST]-(b)\
-                RETURN DISTINCT b\
-                UNION\
-                WITH a\
-                MATCH (a)-[r1:CO_ARTIST]->(s)<-[r2:MAIN_ARTIST]-(b)\
-                RETURN DISTINCT b\
-                }\
-                RETURN COUNT(b.name)`);
+    async getArtist(artist) {
+        const relations = await this._neoDriver.executeQuery(
+            `
+            MATCH (a:Artist{name:\'${artist}\'})
+            WITH collect(a) as artist
+            CALL apoc.export.json.data(artist,[],null,{useTypes:true, stream: true, jsonFormat:'JSON'})
+            YIELD data
+            RETURN data
+            `);
 
-            // const collabs = await this._neoDriver.executeQuery(`MATCH (n:Artist) RETURN n LIMIT 25`);
-
-            // var aNumber = count.toInt();
-            // if (this._neoDriver.integer.inSafeRange(count)) {
-            //     aNumber = count.toNumber()
-            //   }else{
-            //       aNumber = count.toString();
-            //   }
-            return count[0]['_fields'].toString();
-        } catch (error){
-            debug(error);
+        const nodes = JSON.parse(relations[0]._fields[0] + '}').nodes;
+        if (nodes.length === 0) {
             return null;
         }
-
+        return nodes[0];
     }
 
 }

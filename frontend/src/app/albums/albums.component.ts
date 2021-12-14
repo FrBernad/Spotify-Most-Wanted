@@ -28,8 +28,8 @@ export class AlbumsComponent implements OnInit, OnDestroy {
   countries: Country[] = [];
 
   selectedCountry: string = "Any";
-  selectedGenre: string = "";
-  selectedArtist: string = "";
+  selectedGenre: string = "Any";
+  selectedArtist: string = "Any";
 
   loading = true;
 
@@ -69,7 +69,9 @@ export class AlbumsComponent implements OnInit, OnDestroy {
           ...this.response,
           ...results
         };
-        this.spinner.hide().then(() => this.loading = false);
+        if (this.loading) {
+          this.spinner.hide().then(() => this.loading = false);
+        }
       });
   }
 
@@ -96,9 +98,18 @@ export class AlbumsComponent implements OnInit, OnDestroy {
 
   onSearch() {
     this.query.page = 0;
-    this.query.artist = this.selectedArtist;
-    this.query.country = this.selectedCountry;
+
     this.query.genre = this.selectedGenre;
+    this.query.artist = this.selectedArtist;
+
+    if (this.selectedGenre == "Any") {
+      delete this.query.genre;
+    }
+
+    if (this.selectedArtist == "Any") {
+      delete this.query.artist;
+    }
+
     this.updateRoute();
   }
 

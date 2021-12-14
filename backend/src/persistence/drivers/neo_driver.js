@@ -33,17 +33,18 @@ class NeoDriver {
 
     async executeQuery(query, variables) {
         const session = this._client.session();
-        let result;
         try {
-            result = await session.readTransaction(tx =>
+            const result = await session.readTransaction(tx =>
                 tx.run(query, variables)
             )
-        } catch (error) {
-            debug(`unable to execute Neo query. ${error}`)
-            return null;
-        } finally {
+
             await session.close()
             return result.records;
+        } catch (error) {
+            debug(`unable to execute Neo query. ${error}`);
+
+            await session.close();
+            throw new Error("500");
         }
     }
 

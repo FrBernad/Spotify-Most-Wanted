@@ -1,0 +1,108 @@
+<div class="container-fluid px-0">
+  <!--  SEARCH -->
+  <div class="col-12 flex-grow-0">
+    <div class="container-fluid px-0">
+      <div class="row">
+        <div class="col-12">
+          <div class="container-fluid px-0">
+            <div class="row align-items-end justify-content-between">
+
+              <div class="col-4 d-flex align-items-center">
+                <div class="row d-flex flex-grow-1">
+                  <div class="col-12">
+                    <label for="Genre" class="form-label search-element-label txt-primary">Genre</label>
+                  </div>
+                  <div class="col-12">
+                    <input type="text" (keypress)="onChangeGenre($event)"
+                           [(ngModel)]="selectedGenre"
+                           class="search-element form-control w-100" id="Genre" placeholder="genre">
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-4 d-flex align-items-center">
+                <div class="row flex-grow-1">
+                  <div class="col-12">
+                    <label class="form-label search-element-label txt-primary">Country</label>
+                  </div>
+                  <div class="col-12">
+                    <div class="dropdown w-100">
+                      <button
+                        class="btn search-element w-100 btn-secondary dropdown-toggle d-flex align-items-center justify-content-between"
+                        type="button" id="countriesDropdown"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <span>{{selectedCountry}}</span>
+                      </button>
+                      <ul class="dropdown-menu search-element dropdown-menu-end dropdown-limits"
+                          aria-labelledby="countriesDropdown">
+                        <li (click)="onChangeCountry(null)">
+                          <a class="dropdown-item txt-primary">Any</a>
+                        </li>
+                        <li *ngFor="let country of countries" (click)="onChangeCountry(country.name)">
+                          <a class="dropdown-item txt-primary">{{country.name}}</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-4 d-flex align-items-center">
+                <button class="btn search-btn w-100" (click)="onSearch()">Search</button>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--  RESULTS SECTION -->
+  <div class="col-12 my-4 flex-grow-1 d-flex">
+    <div class="container-fluid px-0 flex-grow-1 d-flex">
+      <ng-container *ngIf="loading; else NOT_LOADING">
+        <div class="h-100 w-100 position-relative">
+          <ngx-spinner
+            bdColor="rgba(0,0,0,0)"
+            size="medium"
+            color="#fff"
+            [fullScreen]="false"
+            type="ball-rotate"
+          >
+          </ngx-spinner>
+        </div>
+      </ng-container>
+      <ng-template #NOT_LOADING>
+        <div *ngIf="response.results.length>0; else NO_RESULTS"
+             class="row align-content-between justify-content-center">
+          <!--  RESULTS  -->
+          <div class="col-12">
+            <div class="container-fluid px-0">
+              <div class="row">
+                <div *ngFor="let artist of response.results" class="col-4 mt-4">
+                  <app-artist [artist]="artist"></app-artist>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--  PAGINATION  -->
+          <app-pagination [totalPages]="response.totalPages" [currentPage]="query.page"
+                          (changePage)="onChangePage($event)"></app-pagination>
+        </div>
+        <ng-template #NO_RESULTS>
+          <div class="row align-items-center justify-content-center flex-grow-1">
+            <div class="col-12">
+              <p class="text-center no-results">No results were found...</p>
+            </div>
+          </div>
+        </ng-template>
+
+      </ng-template>
+
+    </div>
+  </div>
+
+</div>

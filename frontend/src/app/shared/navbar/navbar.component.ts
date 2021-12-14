@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import * as url from "url";
 
 @Component({
   selector: 'app-navbar',

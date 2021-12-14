@@ -1,0 +1,60 @@
+<div class="container-fluid px-0 d-flex">
+
+  <div class="row align-items-start flex-grow-1 d-flex flex-column">
+
+    <div class="col-12 mt-4 flex-grow-0">
+      <div class="container-fluid px-0">
+        <div class="row flex-grow-1 justify-content-center">
+          <div class="col-6">
+            <div class="row d-flex justify-content-center">
+              <div class="col-8 d-flex justify-content-center">
+                <label for="Artist" class="form-label relation-artist txt-primary">Artist</label>
+              </div>
+              <div class="col-8">
+                <input type="text" (keypress)="onChangeArtist($event)"
+                       [(ngModel)]="selectedArtist"
+                       class="search-element form-control w-100 relation-artist-search"
+                       id="Artist" placeholder="artist">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 my-4 flex-grow-1 d-flex">
+
+      <div class="container-fluid px-0 flex-grow-1 d-flex">
+
+        <div [ngClass]="{'d-none':!isLoading}" class="h-100 w-100 position-relative">
+          <ngx-spinner
+            bdColor="rgba(0,0,0,0)"
+            size="medium"
+            color="#fff"
+            [fullScreen]="false"
+            type="ball-rotate"
+          >
+          </ngx-spinner>
+        </div>
+
+        <div [ngClass]="{'d-none':isLoading || !query.artist || response.nodes.length===0}"
+             class="row align-content-between justify-content-center flex-grow-1">
+          <!--  RELATIONS  -->
+          <div class="col-12 my-4 flex-grow-1">
+            <div class="container-fluid px-0 h-100" id="graphContainer"></div>
+          </div>
+        </div>
+
+        <div [ngClass]="{'d-none':isLoading || response.nodes.length>0 || !query.artist}"
+             class="row align-items-center justify-content-center flex-grow-1">
+          <div class="col-12">
+            <p class="text-center no-results">No results were found...</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>

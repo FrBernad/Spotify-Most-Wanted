@@ -38,33 +38,26 @@ router.get('/', async function (req, res, next) {
 
 });
 
-  router.get('/getArtistsCollab',async function(req, res, next){
-      const queryParams = req.query;
+router.get('/relations', async function (req, res, next) {
+    const queryParams = req.query;
 
-      const page = getOrDefault(queryParams.page, _DEFAULT_PAGE);
-      const itemsPerPage = getOrDefault(queryParams.itemsPerPage, _DEFAULT_ITEMS_PER_PAGE);
-      const artist = getOrDefault(queryParams.artists, "");
-      let results;
+    const size = getOrDefault(queryParams.itemsPerPage, _DEFAULT_ITEMS_PER_PAGE);
+    const artist = getOrDefault(queryParams.artist, "");
+    let results;
 
-      try{
-        results = await searchService.getArtitstCollab(queryParams.artist,page,itemsPerPage);
-      } catch(e){
-          res.sendStatus(parseInt(e.message));
-          return
-      }
+    try {
+        results = await searchService.getArtistRelations(artist, size);
+    } catch (e) {
+        res.sendStatus(parseInt(e.message));
+        return;
+    }
 
-      if(!results){
-          res.sendStatus(400);
-          return;
-      }
+    if (!results) {
+        res.sendStatus(204);
+    } else {
+        res.send(results)
+    }
 
-      const searchParams = new URLSearchParams();
-
-      if(!!artist){
-          searchParams.append(artist);
-      }
-
-      createPaginationResponse(req, res,searchParams,results);
-  });
+});
 module.exports = router;
 

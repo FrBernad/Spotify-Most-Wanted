@@ -3,8 +3,8 @@ import {FaIconLibrary} from "@fortawesome/angular-fontawesome";
 import {
   faMicrophone as fasMicrophone,
   faMusic as fasMusic,
-  faRecordVinyl as fasRecordVinyl,
-  faPlay as fasPlay
+  faPlay as fasPlay,
+  faRecordVinyl as fasRecordVinyl
 } from "@fortawesome/free-solid-svg-icons"
 import {Title} from "@angular/platform-browser";
 

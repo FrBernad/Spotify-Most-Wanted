@@ -18,49 +18,41 @@ class AlbumDao {
     }
 
     async getMostPopularAlbumsCount(artist, country, genre) {
-        try {
-            const match = daoUtils.generateMatch(artist, country, genre);
-            const project1 = {
-                $project: {
-                    _id: 0,
-                    album: {albumName: "$album", by: "$artist"},
-                    value: {
-                        title: "$title",
-                        popularity: "$popularity",
-                        uri: "$uri",
-                        artists: {$setUnion: [["$artist"], "$co_artists"]}
-                    }
+        const match = daoUtils.generateMatch(artist, country, genre);
+        const project1 = {
+            $project: {
+                _id: 0,
+                album: {albumName: "$album", by: "$artist"},
+                value: {
+                    title: "$title",
+                    popularity: "$popularity",
+                    uri: "$uri",
+                    artists: {$setUnion: [["$artist"], "$co_artists"]}
                 }
-            };
-            const group = {$group: {"_id": "$album", "songs": {"$addToSet": "$value"}}};
+            }
+        };
+        const group = {$group: {"_id": "$album", "songs": {"$addToSet": "$value"}}};
 
-            const count = {$count: "totalItems"};
+        const count = {$count: "totalItems"};
 
-            const pipeline = [match, project1, group, count];
+        const pipeline = [match, project1, group, count];
 
-            const result = await this._mongoDriver.executeAggregationQuery(pipeline);
+        const result = await this._mongoDriver.executeAggregationQuery(pipeline);
 
-            return result[0].totalItems;
-
-        } catch (error) {
-            debug(error);
-            return null;
-        }
+        return result[0].totalItems;
     }
 
     async getMostPopularAlbums(artist, country, genre, page, itemsPerPage) {
-        try {
-            const match = daoUtils.generateMatch(artist, country, genre);
-            const project1 = {
-                $project: {
-                    _id: 0,
-                    album: {title: "$album", author: "$artist"},
-                    songs: {
-                        title: "$title",
-                        popularity: "$popularity",
-                        uri: "$uri",
-                        artists: {$setUnion: [["$artist"], "$co_artists"]}
-                    }
+        const match = daoUtils.generateMatch(artist, country, genre);
+        const project1 = {
+            $project: {
+                _id: 0,
+                album: {title: "$album", author: "$artist"},
+                songs: {
+                    title: "$title",
+                    popularity: "$popularity",
+                    uri: "$uri",
+                    artists: {$setUnion: [["$artist"], "$co_artists"]}
                 }
             };
             const group = {$group: {"_id": "$album", "songs": {"$addToSet": "$songs"}}};
@@ -68,14 +60,9 @@ class AlbumDao {
             const sort = {$sort: {popularity: 1}};
             const offsetAndLimit = daoUtils.generateOffsetAndLimit(page, itemsPerPage);
 
-            const pipeline = [match, project1, group, project2, sort, ...offsetAndLimit];
+        const pipeline = [match, project1, group, project2, sort, ...offsetAndLimit];
 
-            return await this._mongoDriver.executeAggregationQuery(pipeline);
-
-        } catch (error) {
-            debug(error);
-            return null;
-        }
+        return await this._mongoDriver.executeAggregationQuery(pipeline);
     }
 
 }

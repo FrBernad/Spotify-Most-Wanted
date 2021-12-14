@@ -62,4 +62,13 @@ button:focus {
 h1, p {
   overflow-wrap: anywhere;
   margin-bottom: 0;
+  text-overflow: ellipsis;
+}
+
+.text-small{
+  font-size: 25px;
+}
+
+.anychart-credits {
+  display: none!important;
 }

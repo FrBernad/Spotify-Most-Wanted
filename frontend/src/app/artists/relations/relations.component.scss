@@ -1,0 +1,17 @@
+:host {
+  display: flex;
+  flex: 1;
+}
+
+.relation-artist {
+  font-size: 2.3rem;
+}
+
+.relation-artist-search {
+  height: 40px;
+  font-size: 1.5rem;
+}
+
+#graphContainer{
+  min-height: 50vh;
+}

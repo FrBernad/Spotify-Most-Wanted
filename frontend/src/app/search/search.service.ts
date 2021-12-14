@@ -9,6 +9,7 @@ import {PaginationResult} from "../models/pagination-result.model";
 import {Artist} from "../models/artist.model";
 import {Song} from "../models/song.model";
 import {Country} from "../models/country.model";
+import {Relation} from "../models/relation.model";
 
 export interface AlbumPaginationQuery {
   artist?: string;
@@ -33,6 +34,11 @@ export interface ArtistPaginationQuery {
   itemsPerPage?: number;
 }
 
+export interface ArtistRelationQuery {
+  artist: string;
+  size?: number;
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +48,7 @@ export class SearchService {
   songs = new Subject<PaginationResult<Song>>();
   albums = new Subject<PaginationResult<Album>>();
   artists = new Subject<PaginationResult<Artist>>();
+  relations = new Subject<Relation>();
   countries = new BehaviorSubject<Country[]>(null);
 
   constructor(
@@ -113,6 +120,28 @@ export class SearchService {
         } else {
           const results: PaginationResult<Artist> = PaginationUtils.parsePaginationResult(res);
           this.artists.next(results);
+        }
+      },
+      (error => this.onError(error))
+    )
+  }
+
+  getArtistRelations(query: ArtistRelationQuery) {
+    this.http
+      .get<Relation>(
+        environment.apiBaseUrl + '/artists/relations',
+        {
+          observe: "response",
+          params: new HttpParams({fromObject: {...query}})
+        },
+      ).subscribe((res) => {
+        if (res.status === HttpStatusCode.NoContent) {
+          this.relations.next({
+            nodes: [],
+            rels: []
+          });
+        } else {
+          this.relations.next(res.body);
         }
       },
       (error => this.onError(error))

@@ -1,7 +1,9 @@
 <div class="container-fluid song-container d-flex">
   <div class="row position-relative flex-grow-1">
     <div class="col-12 align-self-center">
-        <h1 class="txt-primary text-center">{{album.title}}</h1>
+      <h1 class="txt-primary text-center" [ngClass]="{'text-small':album.title.length>20}">
+        {{album.title}}
+      </h1>
     </div>
     <div class="col-12 d-flex justify-content-end align-items-end">
       <p class="txt-primary text-end field-text">

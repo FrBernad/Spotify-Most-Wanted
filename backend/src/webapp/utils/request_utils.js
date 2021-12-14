@@ -42,11 +42,6 @@ function addPaginationHeaders(res, baseUri, searchParams, results) {
 
 function createPaginationResponse(req, res, searchParams, results) {
 
-    if (results.results === null) {
-        res.status(500).end();
-        return;
-    }
-
     if (results.results.length === 0) {
         res.status(204).end();
         return;

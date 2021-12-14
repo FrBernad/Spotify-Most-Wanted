@@ -47,37 +47,5 @@
   background-color: rgba(247, 116, 60, 0.5);
 }
 
-.tab-item {
-  cursor: pointer;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 8px 8px 0 0;
-  border: none;
-}
 
-.tab-item .nav-link {
-  border: none;
-}
-
-.nav-link.active {
-  color: var(--primary);
-  background-color: var(--secondary);
-  transition: background-color .3s ease;
-}
-
-.tab-item .nav-link:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  color: var(--primary);
-  border: none;
-}
-
-.tab-item .nav-link.active {
-  background-color: var(--secondary);
-  color: var(--tertiary);
-  border: none;
-}
-
-.nav-tabs {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.6);
-  margin-bottom: 24px;
-}
 

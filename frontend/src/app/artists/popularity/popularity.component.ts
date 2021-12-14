@@ -1,26 +1,26 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {PaginationResult} from "../models/pagination-result.model";
-import {Song} from "../models/song.model";
-import {PaginationUtils} from "../utils/pagination-utils";
 import {Subscription} from "rxjs";
+import {ArtistPaginationQuery, SearchService} from "../../search/search.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {Country} from "../../models/country.model";
+import {PaginationResult} from "../../models/pagination-result.model";
+import {Artist} from "../../models/artist.model";
+import {PaginationUtils} from "../../utils/pagination-utils";
 import {NgxSpinnerService} from "ngx-spinner";
-import {SearchService, SongPaginationQuery} from "../search/search.service";
-import {Country} from "../models/country.model";
 
 @Component({
-  selector: 'app-songs',
-  templateUrl: './songs.component.html',
-  styleUrls: ['./songs.component.scss']
+  selector: 'app-popularity',
+  templateUrl: './popularity.component.html',
+  styleUrls: ['./popularity.component.scss']
 })
-export class SongsComponent implements OnInit, OnDestroy {
+export class PopularityComponent implements OnInit, OnDestroy {
 
-  response: PaginationResult<Song> = {
+  response: PaginationResult<Artist> = {
     results: [],
     totalPages: 0,
   }
 
-  query: SongPaginationQuery = {
+  query: ArtistPaginationQuery = {
     page: PaginationUtils.DEFAULT_ITEMS_PER_PAGE,
     itemsPerPage: PaginationUtils.DEFAULT_ITEMS_PER_PAGE
   }
@@ -29,11 +29,10 @@ export class SongsComponent implements OnInit, OnDestroy {
 
   selectedCountry: string = "Any";
   selectedGenre: string = "Any";
-  selectedArtist: string = "Any";
 
   loading = true;
 
-  private songsSub: Subscription;
+  private artistsSub: Subscription;
   private countriesSub: Subscription;
 
   constructor(
@@ -48,9 +47,9 @@ export class SongsComponent implements OnInit, OnDestroy {
 
     this.spinner.show();
 
-    this.route.queryParams.subscribe((e) => {
+    this.route.queryParams.subscribe((_) => {
       this.parseQueryParams();
-      this.searchService.getSongs(this.query);
+      this.searchService.getArtists(this.query);
     })
 
     this.searchService.getCountries();
@@ -63,7 +62,7 @@ export class SongsComponent implements OnInit, OnDestroy {
       }
     )
 
-    this.songsSub = this.searchService.songs.subscribe(
+    this.artistsSub = this.searchService.artists.subscribe(
       (results) => {
         this.response = {
           ...this.response,
@@ -100,14 +99,9 @@ export class SongsComponent implements OnInit, OnDestroy {
     this.query.page = 0;
 
     this.query.genre = this.selectedGenre;
-    this.query.artist = this.selectedArtist;
 
     if (this.selectedGenre == "Any") {
       delete this.query.genre;
-    }
-
-    if (this.selectedArtist == "Any") {
-      delete this.query.artist;
     }
 
     this.updateRoute();
@@ -154,10 +148,6 @@ export class SongsComponent implements OnInit, OnDestroy {
       delete this.query.country;
     }
 
-    if (!params["artist"]) {
-      delete this.query.artist;
-    }
-
     if (!params["genre"]) {
       delete this.query.genre;
     }
@@ -165,12 +155,11 @@ export class SongsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (!!this.songsSub) {
-      this.songsSub.unsubscribe();
+    if (!!this.artistsSub) {
+      this.artistsSub.unsubscribe();
     }
     if (!!this.countriesSub) {
       this.countriesSub.unsubscribe();
     }
   }
-
 }
