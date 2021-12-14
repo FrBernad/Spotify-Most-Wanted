@@ -7,11 +7,16 @@
   font-size: 2.3rem;
 }
 
+.no-results {
+  color: var(--primary);
+  font-size: 24px;
+}
+
 .relation-artist-search {
   height: 40px;
   font-size: 1.5rem;
 }
 
-#graphContainer{
+#graphContainer {
   min-height: 50vh;
 }

@@ -70,6 +70,7 @@ export class RelationsComponent implements OnInit, OnDestroy {
   }
 
   private generateRelationGraph() {
+
     this.clearGraph();
 
     const data = this.parseGraphData();
@@ -85,31 +86,65 @@ export class RelationsComponent implements OnInit, OnDestroy {
       // configure labels of nodes
       this.currentGraph.nodes().labels().format(function () {
         if (this.getData("group") === "SONG") {
-          return this.getData("title").toUpperCase();
+          return this.getData("title").replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())));
+          ;
         }
 
-        return this.getData("name").toUpperCase();
+        return this.getData("name").replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())));
+        ;
       });
 
       this.currentGraph.nodes().labels().fontSize(12);
       this.currentGraph.nodes().labels().fontWeight(600);
+      this.currentGraph.nodes().labels().fontFamily("ReadexPro");
 
       // configure labels of nodes in groups
       if (data.nodes.length > 1) {
         this.currentGraph.group("SONG").labels().fontColor("#ffa000");
+        this.currentGraph.group("SONG").fill("rgba(193,55,42,0.7)");
+        this.currentGraph.group("SONG").shape("star10");
       }
+
       this.currentGraph.group("ARTIST").labels().fontColor("#ffffff");
+      this.currentGraph.group("ARTIST").fill("rgba(0,0,0,0.7)");
+
+      this.currentGraph.nodes().height(30);
+      this.currentGraph.nodes().selected().height(40);
+      this.currentGraph.nodes().selected().stroke("rgb(247, 116, 60)", 2);
+      this.currentGraph.nodes().stroke("white", 2);
+      this.currentGraph.nodes().hovered().stroke("rgb(247, 116, 60)", 2);
 
       // configure tooltips
       this.currentGraph.tooltip().useHtml(true);
+      this.currentGraph.tooltip().fontFamily("ReadexPro");
+
       this.currentGraph.tooltip().format(function () {
         if (this.type == "node") {
           if (this.getData("group") === "SONG") {
-            return `<span style='font-weight:bold'>${this.getData("title")}</span>`;
+            return `
+                    <p>
+                        <span style='font-weight:bold'>Title: </span>${this.getData("title").replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())))}
+                    </p>
+                    <p>
+                        <span style='font-weight:bold'>Album: </span>${this.getData("album").replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())))}
+                    </p>
+                    <p>
+                        <span style='font-weight:bold'>Genre: </span>${this.getData("genre").replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())))}
+                    </p>
+                    <p>
+                        <span style='font-weight:bold'>URL: </span>${this.getData("url").replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())))}
+                    </p>`;
           }
-          return `<span style='font-weight:bold'>name: ${this.getData("name")}</span>`;
+          return `
+                    <p>
+                        <span style='font-weight:bold'>Name: </span>${this.getData("name").replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())))}
+                    </p>
+                    <p>
+                        <span style='font-weight:bold'>Followers: </span>${this.getData("followers")}
+                    </p>
+                    `;
         } else {
-          return `${this.getData("from")} -- ${this.getData("label")} --> ${this.getData("to")}`;
+          return `${this.getData("label")}`;
         }
       });
 
