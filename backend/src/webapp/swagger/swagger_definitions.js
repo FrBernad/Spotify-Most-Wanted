@@ -248,7 +248,36 @@
  *                      items:
  *                          $ref: '#/components/schemas/Artist'
  */
+/**
+ * @swagger
+ * /artists/relations:
+ *   get:
+ *     summary: Returns the nodes and relations of the requested artist. Simulating a Neo4j graph.
+ *     tags: [Artists]
+ *     parameters:
+ *        - name: artist
+ *          in: query
+ *          description: name of the artist
+ *          required: true
+ *          schema:
+ *              type: string
+ *              example: Drake
+ *        - name: size
+ *          in: query
+ *          description: the number of requested relations.
+ *          schema:
+ *              type: integer
+ *              example: 10
+ *     responses:
+ *      '200':
+ *          description: Returns the nodes and relations of the requested artist
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      example: {"nodes": [{"type": "node","id": "15795","labels": ["Song"],"properties": {"release_date": "2017-11-29T00:00Z","album": "Broken People (with Logic & Rag'n'Bone Man) [From Bright: The Album]","popularity": 145,"genre": "conscious hip hop","title": "broken people","url": "https://open.spotify.com/track/5rxPi0MiR4miNK0rCmk980"}  },  {"type": "node","id": "8331","labels": ["Song"],"properties": {"release_date": "2018-09-28T00:00Z","album": "YSIV","popularity": 23,"genre": "conscious hip hop","title": "the adventures of stoney bob","url": "https://open.spotify.com/track/5xE8cBcKRjKEDdJwmh1ixN"}  },  {"type": "node","id": "12","labels": ["Artist"],"properties": {"followers": 5004777,"name": "Logic"}  },  {"type": "node","id": "3480","labels": ["Artist"],"properties": {"followers": 1258651,"name": "RagnBone Man"}  },  {"type": "node","id": "3075","labels": ["Artist"],"properties": {"followers": 0,"name": "Big Lenbo"}  }  ],  "rels": [  {"id": "18437","type": "relationship","label": "MAIN_ARTIST","start": {"id": "12","labels": ["Artist"]},"end": {"id": "15795","labels": ["Song"]}  },  {"id": "9941","type": "relationship","label": "MAIN_ARTIST","start": {"id": "12","labels": ["Artist"]},"end": {"id": "8331","labels": ["Song"]}  },  {"id": "18438","type": "relationship","label": "CO_ARTIST","start": {"id": "3480","labels": ["Artist"]},"end": {"id": "15795","labels": ["Song"]}  },  {"id": "9944","type": "relationship","label": "CO_ARTIST","start": {"id": "3075","labels": ["Artist"]},"end": {"id": "8331","labels": ["Song"]}  }  ]  }
 
+ */
 /**
  * @swagger
  * /songs:
