@@ -12,7 +12,7 @@
 5. Run ```python3 neo_import.py dev``` inside the **population-scripts** folder to populate Neo4J database. Wait until the script end up running. You ***MUST*** have a Neo4J instance running on localhost with the default port and no authorization.
 6. Run ```mongoimport --db spotify --collection songs --type json --file population-scripts/database.json --jsonArray``` on your desired shell to populate MongoDB database. You ***MUST*** have a MongoDB instance running on localhost with the default port and no authorization.
 
-# Project Dev
+# Local Execution Steps
 1. Run npm install inside the backend and frontend folders.
 2. Start the backend by running npm run dev in the backend directory.
 3. Start the front end by running ng serve
