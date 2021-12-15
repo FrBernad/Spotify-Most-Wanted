@@ -37,7 +37,7 @@ class ArtistDao {
         const sort = {$sort: {popularity: 1}};
         const offsetAndLimit = daoUtils.generateOffsetAndLimit(page, itemsPerPage);
 
-        const pipeline = [match, project, unwind, group, project2, sort, ...offsetAndLimit];
+        const pipeline = [daoUtils.project_normalization,match, project, unwind, group, project2, sort, ...offsetAndLimit];
 
         return await this._mongoDriver.executeAggregationQuery(pipeline);
     }
@@ -56,7 +56,7 @@ class ArtistDao {
         const group = {$group: {"_id": "$key", "songs": {"$addToSet": "$value"}}};
         const count = {$count: "totalItems"};
 
-        const pipeline = [match, project, unwind, group, count];
+        const pipeline = [daoUtils.project_normalization,match, project, unwind, group, count];
 
         const result = await this._mongoDriver.executeAggregationQuery(pipeline);
 
