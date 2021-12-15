@@ -70,7 +70,8 @@ class ArtistDao {
         const relations = await this._neoDriver.executeQuery(
             `
                 CALL {
-                    MATCH (a:Artist{name:\'${artist}\'\})-[r1]->(s)<-[r2]-(b:Artist)
+                    MATCH (a:Artist)-[r1]->(s)<-[r2]-(b:Artist)
+                    WHERE toLower(a.name) = toLower('${artist}')
                     RETURN  a,b,s,r1,r2 LIMIT ${itemsPerPage}
                 }
                 WITH apoc.coll.toSet(collect(s)+collect(a)+collect(b)) as nodes, 
@@ -85,7 +86,8 @@ class ArtistDao {
     async getArtist(artist) {
         const relations = await this._neoDriver.executeQuery(
             `
-            MATCH (a:Artist{name:\'${artist}\'})
+            MATCH (a:Artist)
+            WHERE toLower(a.name) = toLower('${artist}')
             WITH collect(a) as artist
             CALL apoc.export.json.data(artist,[],null,{useTypes:true, stream: true, jsonFormat:'JSON'})
             YIELD data
