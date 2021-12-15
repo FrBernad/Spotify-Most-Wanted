@@ -271,3 +271,6 @@ datasets/.DS_Store
 .DS_Store
 
 datasets/population-scripts/database.json
+
+.env.prod
+

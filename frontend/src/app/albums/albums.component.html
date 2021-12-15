@@ -9,7 +9,7 @@
             <div class="container-fluid px-0">
               <div class="row align-items-end justify-content-between">
 
-                <div class="col-3 d-flex align-items-center">
+                <div class="col-6 col-md-3 d-flex align-items-center">
                   <div class="row">
                     <div class="col-12">
                       <label for="Artist" class="form-label search-element-label txt-primary">Artist</label>
@@ -23,7 +23,7 @@
                   </div>
                 </div>
 
-                <div class="col-3 d-flex align-items-center">
+                <div class="col-6 col-md-3 d-flex align-items-center">
                   <div class="row">
                     <div class="col-12">
                       <label for="Genre" class="form-label search-element-label txt-primary">Genre</label>
@@ -36,7 +36,7 @@
                   </div>
                 </div>
 
-                <div class="col-3 d-flex align-items-center">
+                <div class="col-12 mt-2 mt-md-0 col-md-3 d-flex align-items-center">
                   <div class="row flex-grow-1">
                     <div class="col-12">
                       <label class="form-label search-element-label txt-primary">Country</label>
@@ -63,7 +63,7 @@
                   </div>
                 </div>
 
-                <div class="col-3 d-flex align-items-center">
+                <div class="col-12 mt-2 mt-md-0 col-md-3 d-flex align-items-center">
                   <button class="btn search-btn w-100" (click)="onSearch()">Search</button>
                 </div>
 
@@ -97,7 +97,7 @@
             <div class="col-12">
               <div class="container-fluid px-0">
                 <div class="row">
-                  <div *ngFor="let album of response.results" class="col-4 mt-4">
+                  <div *ngFor="let album of response.results" class="col-12 col-md-4 mt-4">
                     <app-album [album]="album"></app-album>
                   </div>
                 </div>

@@ -1,5 +1,5 @@
 # Environments
-src/environment/.env.prod
+.env.prod
 .venv
 env/
 venv/
