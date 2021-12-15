@@ -3,7 +3,7 @@
     <ul class="pagination mb-0" id="pagination">
 
       <li [ngClass]="{'pag-item':true, 'disabled':currentPage === 0}" [tabindex]="currentPage==0 ? -1 : 1">
-        <span (click)="currentPage !== 0 && setPage(currentPage-1)" class="page-link" id="prev"
+        <span (click)="!loading && currentPage !== 0 && setPage(currentPage-1)" class="page-link" id="prev"
               aria-label="Previous">
            &laquo;
         </span>
@@ -12,7 +12,7 @@
       <ng-container *ngIf="currentPage>3 && currentPage<totalPages-4; else FIRST_OR_LAST_ITEMS">
         <!-- FIRST PAGE -->
         <li [ngClass]="{'pag-item':true, 'active':currentPage === 0}">
-        <span (click)="setPage(0)" class="page-link text-center">
+        <span (click)="!loading && setPage(0)" class="page-link text-center">
           1
         </span>
         </li>
@@ -20,20 +20,20 @@
         <p class="txt-primary mx-2">...</p>
 
         <li [ngClass]="{'pag-item':true}">
-          <span (click)="setPage(currentPage-1)" class="page-link text-center">
+          <span (click)="!loading && setPage(currentPage-1)" class="page-link text-center">
             {{currentPage}}
           </span>
         </li>
 
         <li [ngClass]="{'pag-item':true, 'active':true}">
-          <span (click)="setPage(currentPage)" class="page-link text-center">
+          <span (click)="!loading &&  setPage(currentPage)" class="page-link text-center">
             {{currentPage + 1 }}
           </span>
         </li>
 
         <ng-container>
           <li [ngClass]="{'pag-item':true}">
-            <span (click)="setPage(currentPage+1)" class="page-link text-center">
+            <span (click)="!loading &&  setPage(currentPage+1)" class="page-link text-center">
               {{currentPage + 2}}
             </span>
           </li>
@@ -43,7 +43,7 @@
 
         <!-- LAST PAGE -->
         <li [ngClass]="{'pag-item':true, 'active':currentPage === totalPages-1}">
-            <span (click)="setPage(totalPages-1)" class="page-link text-center">
+            <span (click)="!loading &&  setPage(totalPages-1)" class="page-link text-center">
               {{totalPages}}
             </span>
         </li>
@@ -54,14 +54,14 @@
         <ng-container *ngIf="currentPage<=3; else LAST_ITEMS">
           <!-- FIRST PAGE -->
           <li [ngClass]="{'pag-item':true, 'active':currentPage === 0}">
-            <span (click)="setPage(0)" class="page-link text-center">
+            <span (click)="!loading && setPage(0)" class="page-link text-center">
               1
             </span>
           </li>
 
           <li *ngFor="let page of numRange(1,3)"
               [ngClass]="{'pag-item':true, 'active':currentPage === page}">
-            <span (click)="setPage(page)" class="page-link text-center">
+            <span (click)="!loading && setPage(page)" class="page-link text-center">
               {{page + 1}}
             </span>
           </li>
@@ -70,7 +70,7 @@
 
           <!-- LAST PAGE -->
           <li [ngClass]="{'pag-item':true, 'active':currentPage === totalPages-1}">
-            <span (click)="setPage(totalPages-1)" class="page-link text-center">
+            <span (click)="!loading && setPage(totalPages-1)" class="page-link text-center">
               {{totalPages}}
             </span>
           </li>
@@ -80,7 +80,7 @@
       <ng-template #LAST_ITEMS>
         <!-- FIRST PAGE -->
         <li [ngClass]="{'pag-item':true, 'active':currentPage === 0}">
-            <span (click)="setPage(0)" class="page-link text-center">
+            <span (click)="!loading && setPage(0)" class="page-link text-center">
               1
             </span>
         </li>
@@ -89,14 +89,14 @@
 
         <li *ngFor="let page of numRange(totalPages-4,totalPages-2)"
             [ngClass]="{'pag-item':true, 'active':currentPage === page}">
-          <span (click)="setPage(page)" class="page-link text-center">
+          <span (click)="!loading && setPage(page)" class="page-link text-center">
             {{page + 1}}
           </span>
         </li>
 
         <!-- LAST PAGE -->
         <li [ngClass]="{'pag-item':true, 'active':currentPage === totalPages-1}">
-            <span (click)="setPage(totalPages-1)" class="page-link text-center">
+            <span (click)="!loading && setPage(totalPages-1)" class="page-link text-center">
               {{totalPages}}
             </span>
         </li>
@@ -105,7 +105,7 @@
 
       <li [ngClass]="{'pag-item':true, 'disabled':currentPage === totalPages-1}"
           [tabindex]="currentPage === totalPages-1 ? -1 : 1">
-        <span (click)="currentPage !== totalPages-1 && setPage(currentPage+1)" class="page-link" id="next"
+        <span (click)="!loading && currentPage !== totalPages-1 && setPage(currentPage+1)" class="page-link" id="next"
               aria-label="Next">
            &raquo;
         </span>

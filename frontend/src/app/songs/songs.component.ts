@@ -50,6 +50,8 @@ export class SongsComponent implements OnInit, OnDestroy {
 
     this.route.queryParams.subscribe((e) => {
       this.parseQueryParams();
+      this.loading = true;
+      this.spinner.show();
       this.searchService.getSongs(this.query);
     })
 
@@ -138,16 +140,16 @@ export class SongsComponent implements OnInit, OnDestroy {
 
     if (params["page"]) {
       this.query.page = Number.parseInt(params["page"])
-      this.query.page = isNaN(this.query.page) ? 0 : this.query.page;
+      this.query.page = isNaN(this.query.page) ? PaginationUtils.DEFAULT_PAGE : this.query.page;
     } else {
-      this.query.page = 0;
+      this.query.page = PaginationUtils.DEFAULT_PAGE;
     }
 
     if (params["itemsPerPage"]) {
       this.query.itemsPerPage = Number.parseInt(params["itemsPerPage"])
-      this.query.itemsPerPage = isNaN(this.query.itemsPerPage) ? 6 : this.query.itemsPerPage;
+      this.query.itemsPerPage = isNaN(this.query.itemsPerPage) ? PaginationUtils.DEFAULT_ITEMS_PER_PAGE : this.query.itemsPerPage;
     } else {
-      this.query.itemsPerPage = 6
+      this.query.itemsPerPage = PaginationUtils.DEFAULT_ITEMS_PER_PAGE
     }
 
     if (!params["country"]) {

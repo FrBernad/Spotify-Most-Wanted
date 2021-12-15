@@ -20,7 +20,7 @@ export class RelationsComponent implements OnInit, OnDestroy {
 
   query: ArtistRelationQuery = {
     artist: "",
-    size: 10
+    size: 20
   }
 
   selectedArtist: string = ""

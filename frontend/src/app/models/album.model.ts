@@ -1,7 +1,8 @@
 export class Album {
   constructor(
-    public title: String,
-    public author: string
+    public title: string,
+    public author: string,
+    public popularity: number,
   ) {
   }
 }

@@ -9,16 +9,16 @@
       </button>
     </a>
     <div class="col-12">
-      <h1 class="txt-primary">{{song.title}}</h1>
+      <h1 class="txt-primary" [ngClass]="{'text-small':song.title.length>20}">{{song.title | titlecase}}</h1>
     </div>
     <div class="col-12">
       <div class="container-fluid px-0">
         <div class="row">
           <div class="col-12">
             <p class="txt-primary">
-              <span>{{song.artist}}</span>
+              <span>{{song.artist | titlecase}}</span>
               <span *ngFor="let coa of song.co_artists; last as isLast; first as isFirst">
-                {{isFirst ? 'ft ' : ''}}{{coa}}{{isLast ? '' : ','}}
+                {{isFirst ? 'ft ' : ''}}{{coa | titlecase}}{{isLast ? '' : ','}}
               </span>
             </p>
           </div>
@@ -27,7 +27,7 @@
               {{song.genre | titlecase}}
             </p>
           </div>
-          <div class="col-12">
+          <div class="col-6">
             <p class="txt-primary">
               {{getDate().toDateString() | date:'shortDate'}}
             </p>

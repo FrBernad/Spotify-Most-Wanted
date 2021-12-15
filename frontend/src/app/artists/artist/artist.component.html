@@ -1,7 +1,7 @@
 <div class="container-fluid song-container d-flex">
   <div class="row position-relative flex-grow-1">
     <div class="col-12 align-self-center">
-      <h1 class="txt-primary text-center">{{artist.name}}</h1>
+      <h1 class="txt-primary text-center" [ngClass]="{'text-small':artist.name.length>20}">{{artist.name | titlecase}}</h1>
     </div>
   </div>
 </div>

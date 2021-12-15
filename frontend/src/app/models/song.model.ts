@@ -11,7 +11,7 @@ export class Song {
     public tempo: number,
     public title: string,
     public uri: string,
-    public _id: string
+    public _id: string,
   ) {
   }
 
