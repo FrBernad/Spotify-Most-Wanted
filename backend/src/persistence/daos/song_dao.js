@@ -1,6 +1,5 @@
 const debug = require('debug')('backend:server');
 const daoUtils = require('@persistence/daos/utils/dao_utils');
-const {getOrDefault} = require("@webapp/utils/request_utils");
 
 class SongsDao {
 
@@ -19,11 +18,10 @@ class SongsDao {
     }
 
     async getMostPopularSongsCount(artist, country, genre) {
-
         const match = daoUtils.generateMatch(artist, country, genre);
         const count = {$count: "totalItems"}
 
-        const pipeline = [daoUtils.project_normalization,match, count];
+        const pipeline = [daoUtils.project_normalization, match, count];
 
         const result = await this._mongoDriver.executeAggregationQuery(pipeline);
 
@@ -32,18 +30,18 @@ class SongsDao {
 
     async getMostPopularSongs(artist, country, genre, page, itemsPerPage) {
         const match = daoUtils.generateMatch(artist, country, genre);
-        const sort = {$sort: {popularity: -1, _id: 1}};
+        const sort = {$sort: {popularity: -1, _id: -1}};
         const offsetAndLimit = daoUtils.generateOffsetAndLimit(page, itemsPerPage);
 
-        const pipeline = [daoUtils.project_normalization,match, sort,...offsetAndLimit];
+        const pipeline = [daoUtils.project_normalization, match, sort, ...offsetAndLimit];
 
         return await this._mongoDriver.executeAggregationQuery(pipeline);
     }
 
     async getGenres() {
-        const group = {$group: {"_id": "$genre", count: {"$sum": 1}}};
-        const project = {$project: {_id: 0, genre: "$_id", amount: "$count"}};
-        const sort = {$sort: {genre: 1}, _id: 1};
+        const group = {$group: {"_id": "$genre"}};
+        const project = {$project: {_id: 0, name: "$_id"}};
+        const sort = {$sort: {name: 1}};
 
         const pipeline = [group, project, sort];
 

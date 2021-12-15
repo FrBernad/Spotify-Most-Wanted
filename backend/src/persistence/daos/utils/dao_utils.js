@@ -33,25 +33,25 @@ class DaoUtils {
     }
 
     static project_normalization = {
-        $project:{
+        $project: {
             title: {$toLower: "$title"},
             uri: "$uri",
             popularity: "$popularity",
             artist: {$toLower: "$artist"},
             artist_followers: "$artist_followers",
-            co_artists:{
-                $map:{
+            co_artists: {
+                $map: {
                     input: "$co_artists",
                     as: "co_artist",
-                    in:{$toLower: "$$co_artist"}
+                    in: {$toLower: "$$co_artist"}
                 }
-            }, 
+            },
             genre: {$toLower: "$genre"},
             countries: {
-                $map:{
+                $map: {
                     input: "$countries",
                     as: "country",
-                    in:{$toLower: "$$country"}
+                    in: {$toLower: "$$country"}
                 }
             },
             album: {$toLower: "$album"},

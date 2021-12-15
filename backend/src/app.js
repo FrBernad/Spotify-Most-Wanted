@@ -28,7 +28,7 @@ const swaggerOptions = {
             }
         ]
     },
-    apis: ['./src/swaggerDefinitions.js']
+    apis: ['./src/swagger_definitions.js']
 };
 
 const specs = swaggerJsDoc(swaggerOptions);
@@ -39,8 +39,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {explorer: true}));
-app.use('/api', [noCacheFilter, indexRouter]);
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(specs, {explorer: true}));
 app.use('/api/artists', [noCacheFilter, artistsRouter]);
 app.use('/api/songs', [noCacheFilter, songsRouter]);
 app.use('/api/countries', [cacheFilter, countriesRouter]);

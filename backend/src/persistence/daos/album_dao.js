@@ -1,6 +1,5 @@
 const debug = require('debug')('backend:server');
 const daoUtils = require('@persistence/daos/utils/dao_utils');
-const {getOrDefault} = require("@webapp/utils/request_utils");
 
 class AlbumDao {
 
@@ -20,20 +19,20 @@ class AlbumDao {
 
     async getMostPopularAlbumsCount(artist, country, genre) {
         const match = daoUtils.generateMatch(artist, country, genre);
-        const project1 = {
-            $project: {
-                _id: 0,
-                album: {albumName: "$album", by: "$artist"},
-                value: {
-                    title: "$title",
-                    popularity: "$popularity",
-                    uri: "$uri",
-                    artists: {$setUnion: [["$artist"], "$co_artists"]}
+        const project1 =
+            {
+                $project: {
+                    _id: 0,
+                    album: {albumName: "$album", by: "$artist"},
+                    value: {
+                        title: "$title",
+                        popularity: "$popularity",
+                        uri: "$uri",
+                        artists: {$setUnion: [["$artist"], "$co_artists"]}
+                    }
                 }
-            }
-        };
+            };
         const group = {$group: {"_id": "$album", "songs": {"$addToSet": "$value"}}};
-
         const count = {$count: "totalItems"};
 
         const pipeline = [daoUtils.project_normalization, match, project1, group, count];
@@ -44,27 +43,41 @@ class AlbumDao {
     }
 
     async getMostPopularAlbums(artist, country, genre, page, itemsPerPage) {
-            const match = daoUtils.generateMatch(artist, country, genre);
-            const project1 = {
-                $project: {
-                    _id: 0,
-                    album: {title: "$album", author: "$artist"},
-                    songs: {
-                        title: "$title",
-                        popularity: "$popularity",
-                        uri: "$uri",
-                        artists: {$setUnion: [["$artist"], "$co_artists"]}
-                    },
-                }
-            };
-            const group = {$group: {"_id": "$album", "songs": {"$addToSet": "$songs"}, "album_popularity": {"$sum":"$songs.popularity"}}};
-            const project2 = {$project: {_id: 0, title: "$_id.title", author: "$_id.author", songs: "$songs", album_popularity: "$album_popularity"}};
-            const sort = {$sort: {album_popularity: -1, _id: 1}};
-            const offsetAndLimit = daoUtils.generateOffsetAndLimit(page, itemsPerPage);
+        const match = daoUtils.generateMatch(artist, country, genre);
+        const project1 = {
+            $project: {
+                _id: 0,
+                album: {title: "$album", author: "$artist"},
+                songs: {
+                    title: "$title",
+                    popularity: "$popularity",
+                    uri: "$uri",
+                    artists: {$setUnion: [["$artist"], "$co_artists"]}
+                },
+            }
+        };
+        const group = {
+            $group: {
+                "_id": "$album",
+                "songs": {"$addToSet": "$songs"},
+                "album_popularity": {"$sum": "$songs.popularity"}
+            }
+        };
+        const project2 = {
+            $project: {
+                _id: 0,
+                title: "$_id.title",
+                author: "$_id.author",
+                songs: "$songs",
+                album_popularity: "$album_popularity"
+            }
+        };
+        const sort = {$sort: {album_popularity: -1, _id: -1}};
+        const offsetAndLimit = daoUtils.generateOffsetAndLimit(page, itemsPerPage);
 
-            const pipeline = [daoUtils.project_normalization, match, project1, group, project2, sort, ...offsetAndLimit];
+        const pipeline = [daoUtils.project_normalization, match, project1, group, project2, sort, ...offsetAndLimit];
 
-            return await this._mongoDriver.executeAggregationQuery(pipeline);
+        return await this._mongoDriver.executeAggregationQuery(pipeline);
     }
 
 }

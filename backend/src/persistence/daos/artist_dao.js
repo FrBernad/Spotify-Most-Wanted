@@ -1,7 +1,5 @@
 const debug = require('debug')('backend:server');
 const daoUtils = require('@persistence/daos/utils/dao_utils');
-const {getOrDefault} = require("@webapp/utils/request_utils");
-
 
 class ArtistDao {
 
@@ -20,8 +18,6 @@ class ArtistDao {
     }
 
     async getMostPopularArtists(country, genre, page, itemsPerPage) {
-
-
         const match = daoUtils.generateMatch(null, country, genre);
         const project =
             {
@@ -32,12 +28,19 @@ class ArtistDao {
                 }
             };
         const unwind = {$unwind: "$artists"};
-        const group = {$group: {"_id": "$artists", "songs": {"$addToSet": "$song"}, "artist_popularity": {"$sum":"$song.popularity"}}};
+        const group =
+            {
+                $group: {
+                    "_id": "$artists",
+                    "songs": {"$addToSet": "$song"},
+                    "artist_popularity": {"$sum": "$song.popularity"}
+                }
+            };
         const project2 = {$project: {_id: 0, name: "$_id", songs: "$songs", artist_popularity: "$artist_popularity"}};
-        const sort = {$sort: {artist_popularity: -1, _id:1}};
+        const sort = {$sort: {artist_popularity: -1, _id: -1}};
         const offsetAndLimit = daoUtils.generateOffsetAndLimit(page, itemsPerPage);
 
-        const pipeline = [daoUtils.project_normalization,match, project, unwind, group, project2, sort, ...offsetAndLimit];
+        const pipeline = [daoUtils.project_normalization, match, project, unwind, group, project2, sort, ...offsetAndLimit];
 
         return await this._mongoDriver.executeAggregationQuery(pipeline);
     }
@@ -56,7 +59,7 @@ class ArtistDao {
         const group = {$group: {"_id": "$key", "songs": {"$addToSet": "$value"}}};
         const count = {$count: "totalItems"};
 
-        const pipeline = [daoUtils.project_normalization,match, project, unwind, group, count];
+        const pipeline = [daoUtils.project_normalization, match, project, unwind, group, count];
 
         const result = await this._mongoDriver.executeAggregationQuery(pipeline);
 
