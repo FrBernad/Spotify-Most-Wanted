@@ -1,39 +1,18 @@
-require('custom-env').env(true,'./src/environment')
+require('custom-env').env(true, './src/environment')
 
 const createError = require('http-errors');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const swaggerJsDoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
 
-const indexRouter = require('@webapp/controllers/index');
 const artistsRouter = require('@webapp/controllers/artists');
 const songsRouter = require('@webapp/controllers/songs');
 const countriesRouter = require('@webapp/controllers/countries');
 const albumsRouter = require('@webapp/controllers/albums');
+const swaggerRouter = require('@webapp/swagger/swagger');
 
 const {cacheFilter, noCacheFilter} = require('@webapp/utils/request_utils')
 
-
-const swaggerOptions = {
-    definition: {
-        openapi:"3.0.0",
-        info: {
-            title: 'Spotify-Most-Wanted API',
-            version: '1.0.0',
-            description: 'This is a REST API application made with Express. It retrieves data from Json'
-        },
-        servers: [
-            {
-                url:"http://localhost:3000/api"
-            }
-        ]
-    },
-    apis: ['@webapp/swagger_definitions.js']
-};
-
-const specs = swaggerJsDoc(swaggerOptions);
 const app = express();
 
 app.use(logger('dev'));
@@ -41,7 +20,9 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 
-app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(specs, {explorer: true}));
+app.use("/resources", express.static('assets/dist/test', {maxAge: '1y'}));
+
+app.use('/api/docs', swaggerRouter);
 app.use('/api/artists', [noCacheFilter, artistsRouter]);
 app.use('/api/songs', [noCacheFilter, songsRouter]);
 app.use('/api/countries', [cacheFilter, countriesRouter]);

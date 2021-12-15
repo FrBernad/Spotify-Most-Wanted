@@ -1,6 +1,6 @@
 const express = require('express');
-const {getOrDefault, createPaginationResponse} = require("@webapp/utils/request_utils");
 const router = express.Router();
+const {getOrDefault, createPaginationResponse} = require("@webapp/utils/request_utils");
 let searchService;
 require("@services/search_service")().then(service => searchService = service);
 
