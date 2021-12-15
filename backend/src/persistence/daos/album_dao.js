@@ -19,33 +19,6 @@ class AlbumDao {
     }
 
     async getMostPopularAlbumsCount(artist, country, genre) {
-        const project0 = {
-            $project:{
-                title: {$toLower: "$title"},
-                uri: "$uri",
-                popularity: "$popularity",
-                artist: {$toLower: "$artist"},
-                artist_followers: "$artist_followers",
-                co_artists:{
-                    $map:{
-                        input: "$co_artists",
-                        as: "co_artist",
-                        in:{$toLower: "$$co_artist"}
-                    }
-                }, 
-                genre: {$toLower: "$genre"},
-                countries: {
-                    $map:{
-                        input: "$countries",
-                        as: "country",
-                        in:{$toLower: "$$country"}
-                    }
-                },
-                album: {$toLower: "$album"},
-                release_date: "$release_date",
-                tempo: "$tempo"
-            }
-        }
         const match = daoUtils.generateMatch(artist, country, genre);
         const project1 = {
             $project: {
@@ -63,7 +36,7 @@ class AlbumDao {
 
         const count = {$count: "totalItems"};
 
-        const pipeline = [project0, match, project1, group, count];
+        const pipeline = [daoUtils.project_normalization, match, project1, group, count];
 
         const result = await this._mongoDriver.executeAggregationQuery(pipeline);
 
@@ -71,33 +44,6 @@ class AlbumDao {
     }
 
     async getMostPopularAlbums(artist, country, genre, page, itemsPerPage) {
-            const project0 = {
-                $project:{
-                    title: {$toLower: "$title"},
-                    uri: "$uri",
-                    popularity: "$popularity",
-                    artist: {$toLower: "$artist"},
-                    artist_followers: "$artist_followers",
-                    co_artists:{
-                        $map:{
-                            input: "$co_artists",
-                            as: "co_artist",
-                            in:{$toLower: "$$co_artist"}
-                        }
-                    }, 
-                    genre: {$toLower: "$genre"},
-                    countries: {
-                        $map:{
-                            input: "$countries",
-                            as: "country",
-                            in:{$toLower: "$$country"}
-                        }
-                    },
-                    album: {$toLower: "$album"},
-                    release_date: "$release_date",
-                    tempo: "$tempo"
-                }
-            }
             const match = daoUtils.generateMatch(artist, country, genre);
             const project1 = {
                 $project: {
@@ -116,7 +62,7 @@ class AlbumDao {
             const sort = {$sort: {album_popularity: -1}};
             const offsetAndLimit = daoUtils.generateOffsetAndLimit(page, itemsPerPage);
 
-            const pipeline = [project0, match, project1, group, project2, sort, ...offsetAndLimit];
+            const pipeline = [daoUtils.project_normalization, match, project1, group, project2, sort, ...offsetAndLimit];
 
             return await this._mongoDriver.executeAggregationQuery(pipeline);
     }

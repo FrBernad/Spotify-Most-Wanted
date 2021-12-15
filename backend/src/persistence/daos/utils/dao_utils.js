@@ -32,6 +32,33 @@ class DaoUtils {
         }
     }
 
+    static project_normalization = {
+        $project:{
+            title: {$toLower: "$title"},
+            uri: "$uri",
+            popularity: "$popularity",
+            artist: {$toLower: "$artist"},
+            artist_followers: "$artist_followers",
+            co_artists:{
+                $map:{
+                    input: "$co_artists",
+                    as: "co_artist",
+                    in:{$toLower: "$$co_artist"}
+                }
+            }, 
+            genre: {$toLower: "$genre"},
+            countries: {
+                $map:{
+                    input: "$countries",
+                    as: "country",
+                    in:{$toLower: "$$country"}
+                }
+            },
+            album: {$toLower: "$album"},
+            release_date: "$release_date",
+            tempo: "$tempo"
+        }
+    }
 }
 
 module.exports = DaoUtils;
