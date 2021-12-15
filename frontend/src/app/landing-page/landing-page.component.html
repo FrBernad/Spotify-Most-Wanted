@@ -43,25 +43,7 @@
           </div>
         </div>
       </div>
-      <div class="col-12 col-md-4">
-        <div class="container-fluid px-0 info-container">
-          <div class="row">
-            <div class="col-12 my-3 d-flex justify-content-start align-items-center">
-              <fa-icon [icon]="['fas','microphone']" size="2x" class="icons-color"></fa-icon>
-            </div>
-            <div class="col-12">
-              <h3 class="section-subtitle">Search Artists</h3>
-            </div>
-            <div class="col-12">
-              <p class="info-text">
-                Search Spotify's most popular <span class="important" [routerLink]="['/artists/popularity']">artists</span>
-                of the last three years.
-                Discover artists <span class="important" [routerLink]="['/artists/relations']">relations</span> and more!
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+
       <div class="col-12 col-md-4">
         <div class="container-fluid px-0 info-container">
           <div class="row">
@@ -81,7 +63,31 @@
           </div>
         </div>
       </div>
+
+      <div class="col-12 col-md-4">
+        <div class="container-fluid px-0 info-container">
+          <div class="row">
+            <div class="col-12 my-3 d-flex justify-content-start align-items-center">
+              <fa-icon [icon]="['fas','microphone']" size="2x" class="icons-color"></fa-icon>
+            </div>
+            <div class="col-12">
+              <h3 class="section-subtitle">Search Artists</h3>
+            </div>
+            <div class="col-12">
+              <p class="info-text">
+                Search Spotify's most popular
+                <span class="important" [routerLink]="['/artists/popularity']">artists</span>
+                of the last three years.
+                Discover artists <span class="important" [routerLink]="['/artists/relations']">relations</span> and
+                more!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
+
   </div>
 </div>
 
