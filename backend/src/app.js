@@ -20,7 +20,28 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 
-app.use("/resources", express.static('assets/dist/test', {maxAge: '1y'}));
+app.use(/^(?!(\/resources|\/api)).+/, function (req, res, next) {
+    res.sendFile("index.html", {root: "src/resources/frontend"})
+});
+
+app.use("/resources", express.static('src/resources/frontend',
+    {
+        setHeaders: function (res, path, stat) {
+            if (path.includes("index.html")) {
+                res.set('Cache-control', 'no-cache, no-store, max-age=0, must-revalidate');
+                res.set('Pragma', 'no-cache');
+                res.set('Expires', '0');
+            } else {
+                res.set('Cache-control', `public, max-age=31536000`);
+            }
+        }
+    }
+    )
+);
+
+app.use("/resources/index.html", noCacheFilter, (req, res, next) => {
+    console.log("asdasd")
+});
 
 app.use('/api/docs', swaggerRouter);
 app.use('/api/artists', [noCacheFilter, artistsRouter]);
@@ -38,6 +59,15 @@ app.use(function (err, req, res, next) {
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+    const status = parseInt(err.status);
+
+    console.log(err)
+
+    if (!isNaN(status)) {
+        res.status(status).end;
+        return;
+    }
 
     res.status(500).send(
         {

@@ -1,0 +1,1 @@
+(self.webpackChunkfrontend=self.webpackChunkfrontend||[]).push([[202],{8202:(e,n,r)=>{"use strict";r.r(n),r.d(n,{SongsModule:()=>o});var t=r(4466),s=r(639);let o=(()=>{class e{}return e.\u0275fac=function(n){return new(n||e)},e.\u0275mod=s.oAB({type:e}),e.\u0275inj=s.cJS({imports:[[t.m]]}),e})()}}]);

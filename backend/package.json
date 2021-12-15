@@ -26,6 +26,7 @@
   },
   "_moduleAliases": {
     "@root": ".",
+    "@resources": "src/resources",
     "@persistence": "src/persistence",
     "@services": "src/services",
     "@webapp": "src/webapp",
