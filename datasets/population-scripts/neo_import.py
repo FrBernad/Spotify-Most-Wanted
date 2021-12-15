@@ -1,12 +1,19 @@
 import json
+import sys
+import os
 
 from neo4j import GraphDatabase
 
 
 class NeoController:
 
-    def __init__(self, uri):
-        self.driver = GraphDatabase.driver(uri)
+    def __init__(self, uri, user, password):
+
+        if user == "":
+            self.driver = GraphDatabase.driver(uri)
+        else:
+            self.driver = GraphDatabase.driver(uri, auth=(user, password))
+
         with self.driver.session() as session:
             session.write_transaction(self._flush_db)
 
@@ -62,10 +69,28 @@ class NeoController:
 if __name__ == "__main__":
 
     with open("./database.json", 'r', encoding="ISO-8859-1") as input_json:
-        controller = NeoController("bolt://localhost:7687")
+
+        mode = sys.argv[1]
+
+        if mode == "prod":
+            user = os.environ['NEO4J_DATABASE_USER']
+            password = os.environ['NEO4J_DATABASE_PASSWORD']
+            uri = os.environ['NEO4J_URI']
+            controller = NeoController(uri, user, password)
+        elif mode == "dev":
+            controller = NeoController("bolt://localhost:7687", "", "")
+        else:
+            print("Invalid mode")
+            exit(0)
+
         json_array = json.load(input_json)
+
+        count = 0
 
         for item in json_array:
             controller.parse_song(item)
+            count = count + 1
+            if count % 1000 == 0:
+                print("imported %d items" % count)
 
         controller.close()
