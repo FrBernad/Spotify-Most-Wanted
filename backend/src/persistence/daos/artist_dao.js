@@ -33,11 +33,11 @@ class ArtistDao {
                 $group: {
                     "_id": "$artists",
                     "songs": {"$addToSet": "$song"},
-                    "artist_popularity": {"$sum": "$song.popularity"}
+                    "popularity": {"$sum": "$song.popularity"},
                 }
             };
-        const project2 = {$project: {_id: 0, name: "$_id", songs: "$songs", artist_popularity: "$artist_popularity"}};
-        const sort = {$sort: {artist_popularity: -1, _id: -1}};
+        const project2 = {$project: {_id: 0, name: "$_id", popularity: "$popularity"}};
+        const sort = {$sort: {popularity: -1, _id: -1}};
         const offsetAndLimit = daoUtils.generateOffsetAndLimit(page, itemsPerPage);
 
         const pipeline = [daoUtils.project_normalization, match, project, unwind, group, project2, sort, ...offsetAndLimit];
