@@ -80,7 +80,7 @@ if __name__ == "__main__":
         elif mode == "dev":
             controller = NeoController("bolt://localhost:7687", "", "")
         else:
-            print("Invalid mode")
+            print("Invalid mode, either prod or dev must be specified")
             exit(0)
 
         json_array = json.load(input_json)
