@@ -41,7 +41,7 @@ router.get('/', async function (req, res, next) {
 router.get('/relations', async function (req, res, next) {
     const queryParams = req.query;
 
-    const size = getOrDefault(queryParams.itemsPerPage, _DEFAULT_ITEMS_PER_PAGE);
+    const size = getOrDefault(queryParams.size, _DEFAULT_ITEMS_PER_PAGE);
     const artist = getOrDefault(queryParams.artist, "");
     let results;
 
