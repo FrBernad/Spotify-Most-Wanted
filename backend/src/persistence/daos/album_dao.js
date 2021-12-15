@@ -68,8 +68,8 @@ class AlbumDao {
                 _id: 0,
                 title: "$_id.title",
                 author: "$_id.author",
-                songs: "$songs",
-                popularity: "$popularity"
+                popularity: "$popularity",
+                songs: "$songs"
             }
         };
         const sort = {$sort: {popularity: -1, _id: -1}};

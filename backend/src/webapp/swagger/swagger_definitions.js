@@ -97,32 +97,6 @@
  * @swagger
  * components:
  *  schemas:
- *      ArtistSong:
- *          type: object
- *          properties:
- *              title:
- *                  type: string
- *                  description: title of the song
- *              popularity:
- *                  type: number
- *                  description: The popularity score calculated taking into account both the number of days a song stayed in the Top200 and the position it stayed in every day, weighting more the top positions
- *              uri:
- *                  type: string
- *                  description: Url of the song in Spotify
- *              album:
- *                  type: string
- *                  description: Whether the song was published as a single or as part of an album or compilation
- *          example:
- *              title: "it wont kill ya"
- *              popularity: 8898998
- *              uri: "https://open.spotify.com/track/5xhJmd0I15jFcEdqxfCzKk"
- *              album: "Memories...Do Not Open"
- *
- */
-/**
- * @swagger
- * components:
- *  schemas:
  *      AlbumSong:
  *          type: object
  *          properties:
@@ -162,6 +136,11 @@
  *              author:
  *                  type: string
  *                  description: the name of the artist who published the album
+ *                  example: "Drake"
+ *              popularity:
+ *                  type: integer
+ *                  description: the popularity of the artist who published the album
+ *                  example: 19828829839
  *              songs:
  *                  type: array
  *                  description: songs of the album that get into the Top 200 charts.
@@ -181,11 +160,10 @@
  *                  type: string
  *                  description: name of the artist
  *                  example: "The Chainsmokers"
- *              songs:
- *                  type: array
- *                  description: songs of the album that get into the Top 200 charts.
- *                  items:
- *                      $ref: '#/components/schemas/ArtistSong'
+ *              popularity:
+ *                  type: integer
+ *                  description: the popularity of the artist
+ *                  example: 181986198282
  *
  */
 
