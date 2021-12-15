@@ -59,7 +59,7 @@ class AlbumDao {
             };
             const group = {$group: {"_id": "$album", "songs": {"$addToSet": "$songs"}, "album_popularity": {"$sum":"$songs.popularity"}}};
             const project2 = {$project: {_id: 0, title: "$_id.title", author: "$_id.author", songs: "$songs", album_popularity: "$album_popularity"}};
-            const sort = {$sort: {album_popularity: -1}};
+            const sort = {$sort: {album_popularity: -1, _id: 1}};
             const offsetAndLimit = daoUtils.generateOffsetAndLimit(page, itemsPerPage);
 
             const pipeline = [daoUtils.project_normalization, match, project1, group, project2, sort, ...offsetAndLimit];

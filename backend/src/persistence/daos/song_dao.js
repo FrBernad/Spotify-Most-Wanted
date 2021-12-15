@@ -32,9 +32,10 @@ class SongsDao {
 
     async getMostPopularSongs(artist, country, genre, page, itemsPerPage) {
         const match = daoUtils.generateMatch(artist, country, genre);
+        const sort = {$sort: {popularity: -1, _id: 1}};
         const offsetAndLimit = daoUtils.generateOffsetAndLimit(page, itemsPerPage);
 
-        const pipeline = [daoUtils.project_normalization,match, ...offsetAndLimit];
+        const pipeline = [daoUtils.project_normalization,match, sort,...offsetAndLimit];
 
         return await this._mongoDriver.executeAggregationQuery(pipeline);
     }
@@ -42,7 +43,7 @@ class SongsDao {
     async getGenres() {
         const group = {$group: {"_id": "$genre", count: {"$sum": 1}}};
         const project = {$project: {_id: 0, genre: "$_id", amount: "$count"}};
-        const sort = {$sort: {genre: 1}};
+        const sort = {$sort: {genre: 1}, _id: 1};
 
         const pipeline = [group, project, sort];
 
