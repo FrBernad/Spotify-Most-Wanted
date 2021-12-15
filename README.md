@@ -8,8 +8,8 @@
 2. Extract both csv files inside **datests/raw-data** folder.
 3. Run **csv_to_json_array.py** script inside the **population-scripts** folder to transform the csv data to json array. This will generate a file named **database.json**.
 4. Run ```pip install neo4j``` to install the neo4j driver.
-5. Install the apoc library in your neo4j instance.
-5. Run **neo_import.py** script inside the **population-scripts** folder to populate Neo4J database. You ***MUST*** have a Neo4J instance running on localhost with the default port and no authorization.
+5. Install the **[apoc library](https://neo4j.com/labs/apoc/4.1/installation/)** in your neo4j instance.
+5. Run ```python3 neo_import.py dev``` inside the **population-scripts** folder to populate Neo4J database. Wait until the script end up running. You ***MUST*** have a Neo4J instance running on localhost with the default port and no authorization.
 6. Run ```mongoimport --db spotify --collection songs --type json --file population-scripts/database.json --jsonArray``` on your desired shell to populate MongoDB database. You ***MUST*** have a MongoDB instance running on localhost with the default port and no authorization.
 
 
