@@ -84,4 +84,24 @@ function noCacheFilter(req, res, next) {
     next();
 }
 
-module.exports = {getOrDefault, addPaginationHeaders, getRequestUri, createPaginationResponse, cacheFilter, noCacheFilter};
+const staticFilesConfig = {
+    setHeaders: function (res, path, stat) {
+        if (path.includes("index.html")) {
+            res.set('Cache-control', 'no-cache, no-store, max-age=0, must-revalidate');
+            res.set('Pragma', 'no-cache');
+            res.set('Expires', '0');
+        } else {
+            res.set('Cache-control', `public, max-age=31536000`);
+        }
+    }
+}
+
+module.exports = {
+    getOrDefault,
+    addPaginationHeaders,
+    getRequestUri,
+    createPaginationResponse,
+    cacheFilter,
+    noCacheFilter,
+    staticFilesConfig
+};
