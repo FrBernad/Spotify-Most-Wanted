@@ -1,3 +1,5 @@
+require('custom-env').env(true,'./src/environment')
+
 const createError = require('http-errors');
 const express = require('express');
 const cookieParser = require('cookie-parser');

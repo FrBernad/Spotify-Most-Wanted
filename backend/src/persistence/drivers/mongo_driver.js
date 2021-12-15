@@ -4,8 +4,8 @@ const debug = require('debug')('backend:server');
 class MongoDriver {
 
     static _COLLECTION = 'songs';
-    static _URI = 'mongodb://127.0.0.1:27017';
-    static _DATABASE = 'spotify';
+    static _URI = process.env.MONGODB_URI;
+    static _DATABASE = process.env.MONGODB_DATABASE;
 
     constructor() {
         if (!MongoDriver.instance) {

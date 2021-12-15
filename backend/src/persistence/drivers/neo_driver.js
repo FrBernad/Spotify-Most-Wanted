@@ -3,8 +3,10 @@ const debug = require('debug')('backend:server');
 
 class NeoDriver {
 
-    static _URI = 'neo4j://127.0.0.1:7687';
-    static _DATABASE = 'neo4j';
+    static _URI = process.env.NEO4J_URI;
+    static _DATABASE = process.env.NEO4J_DATABASE;
+    static _USER = process.env.NEO4J_DATABASE_USER;
+    static _PASSWORD = process.env.NEO4J_DATABASE_PASSWORD;
 
     constructor() {
         if (!NeoDriver.instance) {
@@ -17,8 +19,9 @@ class NeoDriver {
 
     async _init() {
         try {
+
             // Create a new NeoClient
-            this._client = neo4j.driver(NeoDriver._URI, null);
+            this._client = neo4j.driver(NeoDriver._URI, NeoDriver._USER ? neo4j.auth.basic(NeoDriver._USER, NeoDriver._PASSWORD) : null);
 
             // Verify the client connection to the server
             await this._client.verifyConnectivity();

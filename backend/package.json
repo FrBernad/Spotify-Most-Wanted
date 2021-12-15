@@ -4,10 +4,12 @@
   "private": true,
   "scripts": {
     "start": "node src/bin/www",
-    "dev": "nodemon --watch src"
+    "dev": "DEBUG='backend:*' NODE_ENV=dev nodemon --watch src",
+    "prod": "DEBUG='backend:*' NODE_ENV=prod nodemon --watch src"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
+    "custom-env": "^2.0.1",
     "debug": "~2.6.9",
     "ejs": "~2.6.1",
     "express": "~4.16.1",
