@@ -14,7 +14,7 @@ const swaggerOptions = {
             }
         ]
     },
-    apis: ['@webapp/swagger/swagger_definitions.js']
+    apis: ['./src/webapp/swagger/swagger_definitions.js']
 };
 
 const specs = swaggerJsDoc(swaggerOptions);
