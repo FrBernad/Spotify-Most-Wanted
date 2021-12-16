@@ -7,3 +7,12 @@ p, h1, h2, h3, a {
   color: white !important;
 }
 
+.home {
+  text-decoration: none;
+  transition: all .3s ease;
+}
+
+.home:hover {
+  color: #F7743C!important;
+}
+

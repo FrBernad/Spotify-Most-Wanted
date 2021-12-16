@@ -28,7 +28,7 @@ export class PopularityComponent implements OnInit, OnDestroy {
   countries: Country[] = [];
 
   selectedCountry: string = "Any";
-  selectedGenre: string = "Any";
+  selectedGenre: string = "";
 
   loading = true;
 
@@ -102,7 +102,7 @@ export class PopularityComponent implements OnInit, OnDestroy {
 
     this.query.genre = this.selectedGenre;
 
-    if (this.selectedGenre == "Any") {
+    if (this.selectedGenre == "") {
       delete this.query.genre;
     }
 

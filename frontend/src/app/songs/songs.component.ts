@@ -28,8 +28,8 @@ export class SongsComponent implements OnInit, OnDestroy {
   countries: Country[] = [];
 
   selectedCountry: string = "Any";
-  selectedGenre: string = "Any";
-  selectedArtist: string = "Any";
+  selectedGenre: string = "";
+  selectedArtist: string = "";
 
   loading = true;
 
@@ -104,11 +104,11 @@ export class SongsComponent implements OnInit, OnDestroy {
     this.query.genre = this.selectedGenre;
     this.query.artist = this.selectedArtist;
 
-    if (this.selectedGenre == "Any") {
+    if (this.selectedGenre == "") {
       delete this.query.genre;
     }
 
-    if (this.selectedArtist == "Any") {
+    if (this.selectedArtist == "") {
       delete this.query.artist;
     }
 

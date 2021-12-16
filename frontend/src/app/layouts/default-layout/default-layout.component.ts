@@ -16,8 +16,8 @@ export class DefaultLayoutComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  currentRoute(route:String):Boolean{
-    return this.router.url===route;
+  currentRoute(route: String): Boolean {
+    return this.router.url.split('?')[0] === route;
   }
 
 }
