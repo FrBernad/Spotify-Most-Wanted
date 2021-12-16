@@ -11,7 +11,7 @@ Spotify's Daily Top 200 charts in 35+1 (global) countries around the world for a
 The idea behind the project is to showcase the most wanted ***songs***, ***albums*** and ***artists*** of the last 
 three years. The project exposes an ***API*** based on ***Express.js***, and a frontend to visualize the information built on ***Angular***.
 It makes use of two different databases: ***Neo4J*** and ***MongoDB***, and takes advantage of each one for optimal queries.
-You can have a preview of the project [here](https://spotify-most-wanted.herokuapp.com).
+You can have a preview of the project [here](http://spotifymostwanted.herokuapp.com/).
 
 ## What can you do?
 There are two ways of using the application:
