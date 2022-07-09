@@ -3,7 +3,7 @@
 ## Authors
 - [Francisco Bernad](https://github.com/FrBernad)
 - [Roberto Catalán](https://github.com/rcatalan98)
-- [Joaquín Legammare](https://github.com/JoacoLega)
+- [Joaquín Legammare](https://github.com/JLegammare)
 
 ## What is Spotify Most Wanted?
 **Spotify Most Wanted** is a project based on a ***huge Spotify database*** which contains all the songs in 
